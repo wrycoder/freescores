@@ -5,6 +5,8 @@ class Work < ApplicationRecord
   validates :title, presence: true
   validates :score_link, presence: true
   validates_presence_of  :parts, on: :create
+  validates :lyricist, presence: true,
+        if: Proc.new { |w| w.genre.vocal? }
 
   def to_s
     result = title + ' ('
