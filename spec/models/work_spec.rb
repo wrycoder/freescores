@@ -43,6 +43,19 @@ RSpec.describe Work, type: :model do
       expect(Work.count).to eq(initial_works_count + 1)
       expect(Part.count).to eq(initial_parts_count + 1)
     end
+
+    it "has a lyricist if it is vocal" do
+      genre = create(:genre, name: "hymn", vocal: true)
+      choir = create(:instrument,
+                      name: "choir",
+                      rank: 250,
+                      family: "vocal ensemble")
+      work = build(:work, genre_id: genre.id)
+      work.add_instruments({ choir => 1 })
+      expect(work.valid?).to be false
+      work.lyricist = "Elmer Schlondorff"
+      expect(work.valid?).to be true
+    end
   end
 
   context "at runtime" do
