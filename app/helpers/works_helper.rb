@@ -5,16 +5,16 @@ module WorksHelper
     result = ''
     instruments.each_with_index do |inst, x|
       if x == instruments.length - 1
-        if options[:oxford_comma] == true
+        if instruments.length != 2 && options[:oxford_comma] == true
           result << ', and ' + inst[1]
         else
           result << ' and ' + inst[1]
         end
       else
         if x > 0
-          result << ',' 
+          result << ', '
         end
-        result << ' ' + inst[1]
+        result << inst[1]
       end
     end
     result
