@@ -1,0 +1,6 @@
+<%= form_with model: @work do |f| %>
+  <%= f.label :title %>:
+  <%= f.text_field :title, class: "mb-3" %>
+  <%= f.collection_select :genre_id, Genre.all, :id, :name, prompt: true %>
+  <%= f.submit %>
+<% end %>

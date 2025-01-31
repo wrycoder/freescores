@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Title</h2>
+    </div>
+    <div class="col text-center">
+      <h2>Composed In</h2>
+    </div>
+    <div class="col">
+      <h2>Instrumentation</h2>
+    </div>
+  </div>
+  <% @works.each do |work| %>
+    <div class="row">
+      <div class="col">
+        <%= formatted_title(work) %>
+      </div>
+      <div class="col text-center">
+        <%= work.composed_in %>
+      </div>
+      <div class="col">
+        <%= oxford_list(work.list_instruments) %>
+      </div>
+    </div>
+  <% end %>
+</div>
