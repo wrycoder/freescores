@@ -19,4 +19,12 @@ module WorksHelper
     end
     result
   end
+
+  def formatted_title(work)
+    if work.genre.vocal?
+      return work.title + " (text by #{work.lyricist})"
+    else
+      return work.title
+    end
+  end
 end
