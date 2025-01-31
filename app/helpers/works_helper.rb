@@ -4,7 +4,7 @@ module WorksHelper
     options[:oxford_comma] ||= true
     result = ''
     instruments.each_with_index do |inst, x|
-      if x == instruments.length - 1
+      if instruments.length > 1 && x == (instruments.length - 1)
         if instruments.length != 2 && options[:oxford_comma] == true
           result << ', and ' + inst[1]
         else
