@@ -1,2 +1,9 @@
-<h1>Works#create</h1>
-<p>Find me in app/views/works/create.html.erb</p>
+<% if @work.errors.any? %>
+  <% @work.errors.full_messages.each do |msg| %>
+    <ul>
+      <li><%= msg %>
+    </ul>
+  <% end %>
+<% end %>
+
+<%= render partial: "form" %>
