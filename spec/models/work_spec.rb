@@ -56,6 +56,17 @@ RSpec.describe Work, type: :model do
       work.lyricist = "Elmer Schlondorff"
       expect(work.valid?).to be true
     end
+
+    it "cannot have a duplicate title" do
+      genre = create(:genre)
+      instrument = create(:instrument)
+      work = build(:work, title: "Buttons and Bows", genre_id: genre.id)
+      work.add_instruments({ instrument => 1 })
+      work.save!
+      duplicate = build(:work, title: "Buttons and Bows", genre_id: genre.id)
+      duplicate.add_instruments({ instrument => 1})
+      expect { duplicate.save! }.to raise_error(ActiveRecord::RecordNotUnique)
+    end
   end
 
   context "at runtime" do
