@@ -1,0 +1,12 @@
+<% provide(:title, 'Log In') %>
+<h3>Please log in</h3>
+<div class="col-md-6">
+  <%= form_with url: sessions_create_path do |f| %>
+    <%= fields_for :session do |s| %>
+    <%= s.label :password %>
+    <%= s.password_field :password, class: 'form-control' %>
+    <%= s.hidden_field :forwarding_url, value: root_path %>
+    <%= f.submit "Log In", class: 'btn btn-primary form-control' %>
+    <% end %>
+  <% end %>
+</div>
