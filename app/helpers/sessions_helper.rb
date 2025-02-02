@@ -30,6 +30,11 @@ module SessionsHelper
     session.delete(:remember_digest)
   end
 
+  # Stores the URL the user is trying to access.
+  def store_location
+    session[:forwarding_url] = request.url if request.get?
+  end
+
   def authenticate(password)
     admin_password = ENV["ADMIN_PASSWORD"]
     if admin_password.nil?
