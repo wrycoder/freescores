@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container works_list">
   <div class="row">
     <div class="col">
       <h2>Title</h2>
@@ -10,8 +10,9 @@
       <h2>Instrumentation</h2>
     </div>
   </div>
-  <% @works.each do |work| %>
-    <div class="row">
+  <% @works.each_with_index do |work, index| %>
+    <% row_identifier = "works_list_row_" + (index + 1).to_s %>
+    <%= tag.div class: "row #{row_identifier}" do %>
       <div class="col">
         <%= formatted_title(work) %>
       </div>
@@ -21,6 +22,6 @@
       <div class="col">
         <%= oxford_list(work.list_instruments) %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
