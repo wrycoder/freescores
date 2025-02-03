@@ -45,7 +45,7 @@ RSpec.describe "Sessions", type: :request do
     it "login with valid information followed by logout" do
       ENV["ADMIN_PASSWORD"] = 'password'
       get sessions_new_path
-      expect(response.body).to match(/Please log in/)
+      expect(response.body).to match(/Log In/)
       post sessions_create_path, params: { 
         session: { 
           password: 'password',
