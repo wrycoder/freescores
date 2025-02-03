@@ -1,2 +1,7 @@
-<h1>Genres#create</h1>
-<p>Find me in app/views/genres/create.html.erb</p>
+<% provide(:title, "Creating a new genre") %>
+<% if @genre.errors.any? %>
+  <% @genre.errors.full_messages.each do |msg| %>
+    <div>ERROR: <%= msg %></div>
+  <% end %>
+<% end %>
+<%= render partial: "form" %>
