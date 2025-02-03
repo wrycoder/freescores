@@ -1,6 +1,130 @@
-<%= form_with model: @work do |f| %>
-  <%= f.label :title %>:
-  <%= f.text_field :title, class: "mb-3" %>
-  <%= f.collection_select :genre_id, Genre.all, :id, :name, prompt: true %>
-  <%= f.submit %>
-<% end %>
+<div class="row col-md-12">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <%= form_with model: @work, url: works_path, method: :post do |f| %>
+      <%= fields_for :work do |work_form| %>
+      <span class="row col-md-10 bg-dark">
+        <span class="col-md-1">
+          <%= work_form.label :title, class: "fw-bold text-white-50" %>
+        </span>
+        <span class="col-md-9">
+          <%= work_form.text_field :title, class: "mb-3" %>
+        </span>
+      </span>
+      <span class="row col-md-10 bg-dark">
+        <span class="col-md-1">
+          <%= work_form.label :genre_id, "Genre", class: "fw-bold text-white-50" %>
+        </span>
+        <span class="col-md-9">
+          <%= work_form.collection_select :genre_id, Genre.all,
+              :id, :name, {prompt: true},
+              {class: "genre-selector"}  %>
+        </span>
+      </span>
+      <span class="row col-md-10 bg-dark">
+        <span class="col-md-3"></span>
+        <span class="col-md-4 fw-bold text-white-50">Parts</span>
+        <span class="col-md-3"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[0] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-1-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[1] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-2-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[2] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-3-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[3] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-4-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[4] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-5-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <span class="row col-md-10 bg-secondary">
+        <%= work_form.fields_for :parts_attributes[5] do |part_fields| %> 
+        <span class="col-md-5">
+          <%= part_fields.label :instrument_id %>
+          <%= part_fields.collection_select :instrument_id, Instrument.all,
+            :id, :name, {prompt: true},
+            {class: "part-6-selector"} %>
+        </span>
+        <span class="col-md-3">
+          <%= part_fields.label :quantity, "Quantity" %>
+          <%= part_fields.select :quantity, options_for_select(
+            (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+        <% end %>
+        </span>
+        <span class="col-md-2"></span>
+      </span>
+      <% end %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+  <div class="col-md-1"></div>
+</div>
