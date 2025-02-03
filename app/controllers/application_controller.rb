@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
     def logged_in_user
       unless logged_in?
         store_location
-        flash[:danger] = "Please log in."
+        flash[:alert] = "Please log in."
         redirect_to sessions_new_path
       end
     end
