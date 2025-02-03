@@ -9,6 +9,13 @@ RSpec.describe Genre, type: :model do
       expect(g.valid?).to be true
     end
 
+    it "should have a unique name" do
+      g1 = create(:genre, name: "Banjo Symphony")
+      expect(g1.valid?).to be true
+      g2 = build(:genre, name: "Banjo Symphony")
+      expect(g2.valid?). to be false
+    end
+
     it "should be either vocal or non-vocal" do
       g = build(:genre, vocal: nil) 
       expect(g.valid?).to be false
