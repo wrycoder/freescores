@@ -1,1 +1,2 @@
-<%= @work.title %> (<%= oxford_list(@work.list_instruments) %>)
+<% provide(:title, @work.title) %>
+<%= render partial: "work" %>

@@ -1,1 +1,12 @@
-<%= @work.title %> (<%= oxford_list(@work.list_instruments) %>)
+<div class="row col-md-12">
+  <h3><%= @work.title %> (<%= oxford_list(@work.list_instruments) %>)</h3>
+</div>
+<div class="row col-md-12">
+  <div class="col-md-2 text-left"><%= "Composed in #{@work.composed_in}" %></div>
+  <div class="col-md-2 text-left">
+    <%= !@work.revised_in.nil? ? "Revised in #{@work.revised_in}" : "" %>
+  </div>
+  <div class="col-md-8">
+    <%= @work.genre.vocal? ? "(Text by #{@work.lyricist})" : "" %>
+  </div>
+</div>
