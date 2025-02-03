@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Work, type: :model do
   context "on creation" do
-    it "has a title, a year of composition, and a score link" do
+    it "has a title, genre, year of composition, and a score link" do
       genre = create(:genre)
       work = build(:work, composed_in: nil,
                           title: nil,
@@ -24,6 +24,9 @@ RSpec.describe Work, type: :model do
       work.score_link = 'http://foo.bar.com/' + Cicero.words(1)
       i = create(:instrument)
       work.add_instruments({i => 1})
+      work.genre_id = nil
+      expect(work.valid?).to be false
+      work.genre_id = genre.id
       expect(work.valid?).to be true
     end
 
