@@ -7,7 +7,7 @@ class InstrumentsController < ApplicationController
     begin
     @instrument = Instrument.find_or_create_by!(instrument_params)
     rescue Error => ex
-      flash[:danger] = "Error creating instrument: #{ex.message}"
+      flash[:alert] = "Error creating instrument: #{ex.message}"
       redirect_to root_url
     end
   end
@@ -16,7 +16,7 @@ class InstrumentsController < ApplicationController
     begin
       @instrument = Instrument.find(params[:id])
     rescue ActiveRecord::RecordNotFound => ex
-      flash[:danger] = "That instrument was not found"
+      flash[:alert] = "That instrument was not found"
       redirect_to root_url
     end
   end

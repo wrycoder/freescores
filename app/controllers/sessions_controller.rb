@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
       flash[:success] = "You are now logged in"
       redirect_to session_params[:forwarding_url]
     else
-      flash[:danger] = "Login failed"
+      flash[:alert] = "Login failed"
       redirect_to root_url
     end
   end
