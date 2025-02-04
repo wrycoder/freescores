@@ -35,7 +35,7 @@ class InstrumentsController < ApplicationController
   def update
     @instrument = Instrument.find(params[:id])
     @instrument.update(instrument_params)
-    flash[:information] = "Instrument updated"
+    flash.now[:notice] = "Instrument updated"
     render "show"
   end
 
