@@ -43,11 +43,29 @@ class WorksController < ApplicationController
   end
 
   def edit
+    @work = Work.find(params[:id])
   end
 
   def update
+    @work = Work.find(params[:id])
+    begin
+      @work.update!(work_params)
+    rescue ActiveRecord::ActiveRecordError => ex
+      flash.now[:alert] = "Edit failed"
+      render "edit", :status => :bad_request and return
+    end
+    flash.now[:notice] = "Work updated"
+    @works = Work.all
+    render "index"
   end
 
   def delete
   end
+
+  private
+    def work_params
+      params.require(:work).permit(:title, :genre_id, :score_link,
+                                  :composed_in, :revised_in, parts_attributes:
+                                    [:id, :instrument_id, :quantity])
+    end
 end
