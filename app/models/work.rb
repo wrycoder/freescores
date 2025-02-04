@@ -1,5 +1,6 @@
 class Work < ApplicationRecord
   has_many  :parts, dependent: :destroy
+  accepts_nested_attributes_for :parts
   belongs_to :genre
   validates :composed_in, presence: true
   validates :title, presence: true
@@ -43,5 +44,26 @@ class Work < ApplicationRecord
       ensemble << entry
     end
     ensemble.sort { |a,b| a[2] <=> b[2] }
+  end
+
+  def self.build_from_params(params)
+    work = Work.new(
+      title: params["title"],
+      genre_id: params["genre_id"],
+      score_link: params["score_link"],
+      composed_in: params["composed_in"])
+    if params.has_key?("revised_in")
+      work.revised_in = params["revised_in"]
+    end
+    instruments = {}
+    params["parts_attributes"].each do |p|
+      if p[1]["instrument_id"] != ""
+        key = Instrument.find(p[1]["instrument_id"])
+        value = p[1]["quantity"].to_i
+        instruments[key] = value
+      end
+    end
+    work.add_instruments(instruments)
+    work
   end
 end
