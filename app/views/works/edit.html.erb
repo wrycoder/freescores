@@ -1,0 +1,9 @@
+<% provide(:title, "Editing #{@work.title}") %>
+<% if @work.errors.any? %>
+  <% @work.errors.full_messages.each do |msg| %>
+    <ul>
+      <li><%= msg %>
+    </ul>
+  <% end %>
+<% end %>
+<%= render partial: "form", locals: { method: 'patch' } %>
