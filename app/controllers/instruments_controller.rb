@@ -5,11 +5,15 @@ class InstrumentsController < ApplicationController
 
   def create
     begin
-    @instrument = Instrument.find_or_create_by!(instrument_params)
-    rescue Error => ex
-      flash[:alert] = "Error creating instrument: #{ex.message}"
-      redirect_to root_url
+      @instrument = Instrument.create!(instrument_params)
+    rescue ActiveRecord::ActiveRecordError => ex
+      @instrument = Instrument.new(instrument_params)
+      flash.now[:alert] = "#{ex.message}"
+      render "create" and return
     end
+    flash.now[:notice] = "Instrument created"
+    @instruments = Instrument.all
+    render "index"
   end
 
   def show
