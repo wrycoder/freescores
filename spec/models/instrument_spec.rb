@@ -7,6 +7,12 @@ RSpec.describe Instrument, type: :model do
       expect(i.valid?).to be false
     end
 
+    it "is uniquely-named" do
+      create(:instrument, name: "sackbutt", family: "brass")
+      i = build(:instrument, name: "sackbutt")
+      expect(i.valid?).to be false
+    end
+
     it "has a properly formatted title" do
       first_inst = create(:instrument, name: 'piccolo', rank: 350)
       second_inst = create(:instrument, name: 'violin', rank: 400)
