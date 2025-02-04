@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'dashboard/show'
+  get 'dashboard', to: 'dashboard#show'
   post 'sessions/create'
   get 'sessions/destroy'
   get 'sessions/new'
