@@ -1,0 +1,15 @@
+  <span class="row col-md-10 bg-secondary">
+    <span class="col-md-5">
+      <%= f.label :instrument_id %>
+      <%= f.collection_select :instrument_id, Instrument.all,
+        :id, :name, {prompt: true},
+        {class: "part-selector"} %>
+    </span>
+    <span class="col-md-3">
+      <%= f.label :quantity, "Quantity" %>
+      <%= f.select :quantity, options_for_select(
+        (1..10).step(1).to_a.map{|s| ["#{s}", s]}) %>
+    </span>
+    <span class="col-md-2"></span>
+  </span>
+
