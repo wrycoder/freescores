@@ -1,12 +1,14 @@
-<%= form_with model: @instrument do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.label :family %>
-  <%= f.text_field :family %>
-  <%= f.label :rank %>
-  <%= f.select :rank,
-    options_for_select(
-      (10..2500).step(10).to_a.map{|s| ["#{s}", s]}) %>
-  <%= f.submit %>
+<%= form_with model: @instrument, url: instruments_path, method: :post do |f| %>
+  <%= fields_for :instrument do |i| %>
+    <%= i.label :name %>
+    <%= i.text_field :name %>
+    <%= i.label :family %>
+    <%= i.text_field :family %>
+    <%= i.label :rank %>
+    <%= i.select :rank,
+      options_for_select(
+        (10..2500).step(10).to_a.map{|s| ["#{s}", s]}) %>
+  <% end %>
+  <%= f.submit "Update" %>
 <% end %>
 
