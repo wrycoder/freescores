@@ -1,34 +1,47 @@
 require "rails_helper"
 
-def build_catalog
-  trombone = create(:instrument,
-          name: "trombone",
-          family: "brass",
-          rank: 510)
-  oboe = create(:instrument,
-          name: "oboe",
-          family: "woodwinds",
-          rank: 480)
-  piano = create(:instrument,
-          name: "piano",
-          family: "keyboard",
-          rank: 900)
-  genre = create(:genre, name: "Miscellaneous Chamber Music")
-  3.times do
-    w = build(:work, genre_id: genre.id)
-    w.add_instruments({ oboe => 1, piano => 1})
-    w.save!
-  end
-  2.times do
-    w = build(:work, genre_id: genre.id)
-    w.add_instruments({ trombone => 1, oboe => 1, piano => 1 })
-    w.save!
-  end
-end
-
 RSpec.describe WorksController do
+  def build_catalog
+    trombone = create(:instrument,
+            name: "trombone",
+            family: "brass",
+            rank: 510)
+    oboe = create(:instrument,
+            name: "oboe",
+            family: "woodwinds",
+            rank: 480)
+    piano = create(:instrument,
+            name: "piano",
+            family: "keyboard",
+            rank: 900)
+    genre = create(:genre, name: "Miscellaneous Chamber Music")
+    3.times do
+      w = build(:work, genre_id: genre.id)
+      w.add_instruments({ oboe => 1, piano => 1})
+      w.save!
+    end
+    2.times do
+      w = build(:work, genre_id: genre.id)
+      w.add_instruments({ trombone => 1, oboe => 1, piano => 1 })
+      w.save!
+    end
+  end
+
+  before :each do
+    build_catalog
+  end
+
+  after :each do
+    Work.destroy_all
+    expect(Work.count).to eq(0)
+    expect(Part.count).to eq(0)
+    Instrument.destroy_all
+  end
+
   context "when displaying a single work" do
     it "shows a properly-formatted list of instruments" do
+      Work.destroy_all
+      Instrument.destroy_all
       violin = create(:instrument,
               name: "violin",
               family: "strings",
