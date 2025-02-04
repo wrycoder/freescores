@@ -27,6 +27,9 @@ RSpec.describe "works/create.html.erb", type: :view do
     work.valid?
     assign(:work, work)
     render
+    page = Nokogiri::HTML(rendered)
+    form_tag = page.xpath('//form').first
+    expect(form_tag.attribute_nodes[2].value).to match(/post/)
     expect(rendered).to_not match(/Parts can&#39;t be blank/)
   end
 end
