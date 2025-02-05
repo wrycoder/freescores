@@ -1,12 +1,36 @@
 <div class="row col-md-12">
-  <h3><%= @work.title %> (<%= oxford_list(@work.list_instruments) %>)</h3>
+  <h2><%= @work.title %></h2>
 </div>
 <div class="row col-md-12">
-  <div class="col-md-2 text-left"><%= "Composed in #{@work.composed_in}" %></div>
-  <div class="col-md-2 text-left">
-    <%= !@work.revised_in.nil? ? "Revised in #{@work.revised_in}" : "" %>
+  <div class="col-md-2 text-md-end align-bottom">
+    <h4>Forces</h4>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-10 text-left align-bottom">
+    <%= oxford_list(@work.list_instruments) %>
+  </div>
+</div>
+<div class="row col-md-12">
+  <div class="col-md-2 text-md-end align-bottom"><h4>Composed</h4></div>
+  <div class="col-md-2 text-left align-bottom"><%= @work.composed_in %></div>
+  <div class="col-md-2 text-md-end align-bottom">
+    <h4><%= !@work.revised_in.nil? ? "Revised" : "" %></h4>
+  </div>
+  <div class="col-md-2 text-left align-bottom">
+    <%= !@work.revised_in.nil? ? @work.revised_in : "" %>
+  </div>
+  <div class="col-md-4">
     <%= @work.genre.vocal? ? "(Text by #{@work.lyricist})" : "" %>
   </div>
 </div>
+<% if !@work.score_link.nil? %>
+  <div class="row col-md-12">
+    <div class="col-md-2 text-md-end">A score is available</div>
+    <div class="col-md-10 text-left"><%= @work.formatted_score_link %></div>
+  </div>
+<% end %>
+<% if !@work.recording_link.nil? %>
+  <div class="row col-md-12">
+    <div class="col-md-2 text-md-end">A recording is available</div>
+    <div class="col-md-10 text-left"><%= @work.formatted_recording_link %></div>
+  </div>
+<% end %>
