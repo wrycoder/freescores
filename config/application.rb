@@ -25,5 +25,13 @@ module Freescores
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_record.schema_format = :sql
+
+    if ENV['FILE_HOST'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_HOST defined")
+    end
+
+    if ENV['FILE_ROOT'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
+    end
   end
 end
