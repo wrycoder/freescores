@@ -2,6 +2,7 @@ class GenresController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit]
 
   def new
+    flash.now[:notice] = "Define the new genre's properties"
     @genre = Genre.new
   end
 
@@ -11,6 +12,7 @@ class GenresController < ApplicationController
     rescue ActiveRecord::RecordInvalid => ex
       flash.now.alert = "#{ex.message}"
     end
+    flash.now[:notice] = "Genre created"
     @genres = Genre.all
     render "index"
   end

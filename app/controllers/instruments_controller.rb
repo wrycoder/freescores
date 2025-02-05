@@ -1,6 +1,7 @@
 class InstrumentsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update]
   def new
+    flash.now[:notice] = "Define the new instrument's properties"
   end
 
   def create
