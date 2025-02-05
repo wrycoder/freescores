@@ -16,3 +16,25 @@
 .alert-alert {
   background-color: $pink-100;
 }
+
+.alert-notice {
+  background-color: $gray-100;
+}
+
+.vertically-center-right-justified {
+  display: flex;
+  align-items: center; /* Aligns vertically center */
+  justify-content: right;
+}
+
+.vertically-center-left-justified {
+  display: flex;
+  align-items: center; /* Aligns vertically center */
+  justify-content: left;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;  /*Aligns vertically center */
+  justify-content: center; /*Aligns horizontally center */
+}
