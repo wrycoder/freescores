@@ -31,8 +31,9 @@
         </span>
       </span>
       <span class="row col-md-10 bg-dark">
-        <span class="col-md-1">
-          <%= work_form.label :genre_id, "Genre", class: "fw-bold text-white-50" %>
+        <span class="col-md-2">
+          <%= work_form.label :genre_id, "Genre",
+            class: "fw-bold text-white-50 vertically-center-right-justified" %>
         </span>
         <span class="col-md-3">
           <%= work_form.collection_select :genre_id, Genre.all,
@@ -40,23 +41,39 @@
               {class: "genre-selector"}  %>
         </span>
         <span class="col-md-2">
-          <%= work_form.label :score_link, "PDF Score", 
-                                class: "fw-bold text-white-50" %>
+          <%= work_form.label :lyricist, "Lyricist",
+                class: "fw-bold text-white-50 vertically-center-right-justified" %>
         </span>
-        <span class="col-md-4">
-          <%= work_form.text_field :score_link, class: "mb-3" %>
+        <span class="col-md-3">
+          <%= work_form.text_field :lyricist, class: "mb-3" %>
         </span>
       </span>
       <span class="row col-md-10 bg-dark">
-        <span class="col-md-3"></span>
-        <span class="col-md-4 fw-bold text-white-50">Parts</span>
-        <span class="col-md-3"></span>
+        <span class="col-md-2">
+          <%= work_form.label :score_link, "PDF Score",
+               class: "fw-bold text-white-50 vertically-center-right-justified" %>
+        </span>
+        <span class="col-md-3">
+          <%= work_form.text_field :score_link, class: "mb-3" %>
+        </span>
+        <span class="col-md-2">
+          <%= work_form.label :recording_link, "Recording",
+               class: "fw-bold text-white-50 vertically-center-right-justified" %>
+        </span>
+        <span class="col-md-3">
+          <%= work_form.text_field :recording_link, class: "mb-3" %>
+        </span>
+      </span>
+      <span class="row col-md-10 bg-dark">
+        <span class="col-md-10 fw-bold text-white-50 align-items-center">Parts</span>
       </span>
         <%= f.fields_for :parts do |builder| %>
           <%= render "parts_fields", :f => builder %>
         <% end %>
       <% end %>
-      <%= f.submit %>
+      <span class="row col-md-10">
+        <%= f.submit %>
+      </span>
     <% end %>
   </div>
   <div class="col-md-1"></div>
