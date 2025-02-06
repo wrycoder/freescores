@@ -1,36 +1,36 @@
-<div class="row col-md-12">
+<span class="row col-md-12">
   <h2><%= @work.title %></h2>
-</div>
-<div class="row col-md-12">
-  <div class="col-md-2 text-md-end align-bottom">
+</span>
+<span class="row col-md-12">
+  <span class="col-md-2 text-md-end vertically-center-right-justified">
     <h4>Forces</h4>
-  </div>
-  <div class="col-md-10 text-left align-bottom">
+  </span>
+  <span class="col-md-10 text-left vertically-center-left-justified">
     <%= oxford_list(@work.list_instruments) %>
-  </div>
-</div>
-<div class="row col-md-12">
-  <div class="col-md-2 text-md-end align-bottom"><h4>Composed</h4></div>
-  <div class="col-md-2 text-left align-bottom"><%= @work.composed_in %></div>
-  <div class="col-md-2 text-md-end align-bottom">
+  </span>
+</span>
+<span class="row col-md-12">
+  <span class="col-md-2 text-md-end vertically-center-right-justified"><h4>Composed</h4></span>
+  <span class="col-md-2 text-left vertically-center-left-justified"><%= @work.composed_in %></span>
+  <span class="col-md-2 text-md-end vertically-center-right-justified">
     <h4><%= !@work.revised_in.nil? ? "Revised" : "" %></h4>
-  </div>
-  <div class="col-md-2 text-left align-bottom">
+  </span>
+  <span class="col-md-2 text-left vertically-center-left-justified">
     <%= !@work.revised_in.nil? ? @work.revised_in : "" %>
-  </div>
-  <div class="col-md-4">
+  </span>
+  <span class="col-md-4">
     <%= @work.genre.vocal? ? "(Text by #{@work.lyricist})" : "" %>
-  </div>
-</div>
+  </span>
+</span>
 <% if !@work.score_link.nil? %>
-  <div class="row col-md-12">
-    <div class="col-md-2 text-md-end">A score is available</div>
-    <div class="col-md-10 text-left"><%= @work.formatted_score_link %></div>
-  </div>
+  <span class="row col-md-12">
+    <span class="col-md-2 text-md-end">A score is available</span>
+    <span class="col-md-10 text-left"><%= @work.formatted_score_link %></span>
+  </span>
 <% end %>
 <% if !@work.recording_link.nil? %>
-  <div class="row col-md-12">
-    <div class="col-md-2 text-md-end">A recording is available</div>
-    <div class="col-md-10 text-left"><%= @work.formatted_recording_link %></div>
-  </div>
+  <span class="row col-md-12">
+    <span class="col-md-2 text-md-end">A recording is available</span>
+    <span class="col-md-10 text-left"><%= @work.formatted_recording_link %></span>
+  </span>
 <% end %>
