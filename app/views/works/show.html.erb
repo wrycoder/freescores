@@ -1,2 +1,24 @@
 <% provide(:title, @work.title) %>
 <%= render partial: "work" %>
+<div class="row col-md-12">
+  <% if LinerNote.where(work_id: @work.id).any? %>
+    <%= LinerNote.find_by_work_id(@work.id).note %>
+  <% end %>
+</div>
+<div class="row col-md-12">
+  <% if logged_in? %>
+    <span class="col-md-2 text-md-end">
+    <% if !LinerNote.where(work_id: @work.id).any? %>
+        <%= link_to "Add Liner Note",
+            controller: :liner_notes,
+            action: 'new',
+            work_id: @work.id %>
+      <% else %>
+        <%= link_to "Edit Liner Note",
+            controller: :liner_notes,
+            action: 'edit',
+            work_id: @work.id %>
+      <% end %>
+    </span>
+  <% end %>
+</div>
