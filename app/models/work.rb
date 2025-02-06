@@ -1,4 +1,5 @@
 class Work < ApplicationRecord
+  include ActionView::Helpers::UrlHelper
   has_many  :parts, dependent: :destroy
   accepts_nested_attributes_for :parts
   belongs_to :genre
@@ -46,14 +47,46 @@ class Work < ApplicationRecord
     ensemble.sort { |a,b| a[2] <=> b[2] }
   end
 
+  def formatted_recording_link(options = {})
+    options[:label] ||= "Recording"
+    if ENV['FILE_HOST'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_HOST defined")
+    end
+    if ENV['FILE_ROOT'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
+    end
+    link_to(options[:label],
+      "https://" + ENV['FILE_HOST'] + '/' + \
+        ENV['FILE_ROOT'] + '/' + recording_link
+    )
+  end
+
+  def formatted_score_link(options = {})
+    options[:label] ||= "Score"
+    if ENV['FILE_HOST'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_HOST defined")
+    end
+    if ENV['FILE_ROOT'].nil?
+      raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
+    end
+    link_to(options[:label],
+      "https://" + ENV['FILE_HOST'] + '/' + \
+        ENV['FILE_ROOT'] + '/' + score_link
+    )
+  end
+
   def self.build_from_params(params)
     work = Work.new(
       title: params["title"],
       genre_id: params["genre_id"],
       score_link: params["score_link"],
+      recording_link: params["recording_link"],
       composed_in: params["composed_in"])
     if params.has_key?("revised_in")
       work.revised_in = params["revised_in"]
+    end
+    if params.has_key?("lyricist")
+      work.lyricist = params["lyricist"]
     end
     instruments = {}
     params["parts_attributes"].each do |p|
