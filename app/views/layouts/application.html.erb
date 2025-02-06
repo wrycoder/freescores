@@ -16,6 +16,14 @@
 
   <body>
   <div class="container">
+    <% if logged_in? %>
+      <div class="row col-md-12">
+        <span class="col-md-10 text-end">
+          <%= link_to "Dashboard", dashboard_path %>
+        </span>
+        <span class="col-md-2"></span>
+      </div>
+    <% end %>
     <div class="row col-md-12">
       <% flash.each do |key, value| %>
         <%= content_tag :div, value, class: "alert alert-#{key}" %>
