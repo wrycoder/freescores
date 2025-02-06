@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "works/edit.html.erb", type: :view do
-  it "shows the title" do
+  it "shows selected fields" do
     genre = create(:genre)
     piano = create(:instrument,
                   name: "piano",
@@ -21,6 +21,8 @@ RSpec.describe "works/edit.html.erb", type: :view do
     expect(hidden_tag.attribute_nodes[0].value).to match(/hidden/)
     expect(hidden_tag.attribute_nodes[1].value).to match(/_method/)
     expect(hidden_tag.attribute_nodes[2].value).to match(/patch/)
+    ascii_checkbox = page.xpath("//input[@type='checkbox']").first
+    expect(ascii_checkbox.nil?).to be false
     work.destroy
   end
 end

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "schema_migrations" ("version" varchar NOT NULL PRIMA
 CREATE TABLE IF NOT EXISTS "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
 CREATE TABLE IF NOT EXISTS "genres" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "vocal" boolean, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
 CREATE TABLE sqlite_sequence(name,seq);
-CREATE TABLE IF NOT EXISTS "works" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar DEFAULT NULL, "composed_in" integer DEFAULT NULL, "score_link" varchar DEFAULT NULL, "recording_link" varchar DEFAULT NULL, "revised_in" integer DEFAULT NULL, "genre_id" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "lyricist" varchar, CONSTRAINT "fk_rails_a1441ff0e0"
+CREATE TABLE IF NOT EXISTS "works" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar DEFAULT NULL, "composed_in" integer DEFAULT NULL, "score_link" varchar DEFAULT NULL, "recording_link" varchar DEFAULT NULL, "revised_in" integer DEFAULT NULL, "genre_id" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "lyricist" varchar, "ascap" boolean, CONSTRAINT "fk_rails_a1441ff0e0"
 FOREIGN KEY ("genre_id")
   REFERENCES "genres" ("id")
 );
@@ -21,6 +21,7 @@ CREATE UNIQUE INDEX "index_works_on_title" ON "works" ("title");
 CREATE TABLE IF NOT EXISTS "liner_notes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "note" text, "work_id" integer);
 CREATE INDEX "index_liner_notes_on_work_id" ON "liner_notes" ("work_id");
 INSERT INTO "schema_migrations" (version) VALUES
+('20250206105011'),
 ('20250205154319'),
 ('20250131144421'),
 ('20250129125443'),

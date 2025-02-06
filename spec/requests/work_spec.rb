@@ -286,12 +286,14 @@ RSpec.describe WorksController do
       log_in_through_controller
       patch work_url({:id => test_work.id}), params: {
         :work => {
-          :revised_in => 2013
+          :revised_in => 2013,
+          :ascap => true
         }
       }
       expect(response).to have_http_status(:success)
       test_work.reload
       expect(test_work.revised_in).to eq(2013)
+      expect(test_work.ascap?).to be true
       ENV["ADMIN_PASSWORD"] = nil
     end
   end

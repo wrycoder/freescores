@@ -57,8 +57,8 @@ RSpec.describe "works/show.html.erb", type: :view do
     work_2.destroy
   end
 
-  it "shows links to score and mp3" do
-    work = build(:work, genre_id: @genre.id)
+  it "shows links to score and mp3, as well as ascap logo" do
+    work = build(:work, genre_id: @genre.id, ascap: true)
     work.add_instruments({ @piano => 1 })
     work.score_link = work.title.gsub(' ', '_') + ".pdf"
     work.recording_link = work.title.gsub(' ', '_') + ".mp3"
@@ -67,6 +67,7 @@ RSpec.describe "works/show.html.erb", type: :view do
     render
     expect(rendered).to match(/recordings\/mp3\/#{work.title.gsub(' ', '_')}\.pdf/)
     expect(rendered).to match(/recordings\/mp3\/#{work.title.gsub(' ', '_')}\.mp3/)
+    expect(rendered).to match(/ASCAP-small/)
     work.destroy
   end
 end

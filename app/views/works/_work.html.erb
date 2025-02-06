@@ -1,5 +1,11 @@
 <span class="row col-md-12">
-  <h2><%= @work.title %></h2>
+  <span class="col-md-8">
+    <h2><%= @work.title %></h2>
+  </span>
+  <span class="col-md-1 small">
+    <%= @work.ascap? ? image_tag('ASCAP-small.png') + "registered" : '' %>
+  </span>
+  <span class="col-md-3"></span>
 </span>
 <span class="row col-md-12">
   <span class="col-md-2 text-md-end vertically-center-right-justified">

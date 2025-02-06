@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Work, type: :model do
+  after :each do
+    Genre.destroy_all
+  end
+
   context "on creation" do
     it "has a title, genre, year of composition, and a score link" do
       genre = create(:genre)
@@ -28,6 +32,12 @@ RSpec.describe Work, type: :model do
       expect(work.valid?).to be false
       work.genre_id = genre.id
       expect(work.valid?).to be true
+    end
+
+    it "has an ascap status" do
+      genre = create(:genre)
+      work = build(:work, genre: genre)
+      expect(work.ascap?).to be false
     end
 
     it "has at least one part" do

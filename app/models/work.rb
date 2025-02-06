@@ -88,6 +88,9 @@ class Work < ApplicationRecord
     if params.has_key?("lyricist")
       work.lyricist = params["lyricist"]
     end
+    if params.has_key?("ascap")
+      work.ascap = params["ascap"]
+    end
     instruments = {}
     params["parts_attributes"].each do |p|
       if p[1]["instrument_id"] != ""
