@@ -4,21 +4,29 @@ class WorksController < ApplicationController
   def new
     @work = Work.new
     6.times { @work.parts.build }
+    flash.now[:notice] = "Describe your new work"
   end
 
   def create
     begin
-      # work_params["parts_attributes"] = work_params["parts_attributes"].except(empty_fields)
       @work = Work.build_from_params(work_params)
     rescue ActiveRecord::RecordNotFound => ex
       flash.now[:alert] = "Invalid instrument"
       @work = Work.new
+      6.times { @work.parts.build }
       render "create", :status => :bad_request and return
     end
     begin
       @work.save!
     rescue ActiveRecord::ActiveRecordError => ex
-      flash.now[:alert] = "Validation failed"
+      if ex.class == ActiveRecord::RecordNotUnique
+        flash.now[:alert] = "That title is already taken"
+      else
+        flash.now[:alert] = "The music could not be added"
+      end
+      if !@work.parts.any?
+        6.times { @work.parts.build }
+      end
       render "create", :status => :bad_request and return
     end
     flash.now[:notice] = "Work created"
