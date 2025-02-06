@@ -18,7 +18,10 @@ CREATE INDEX "index_parts_on_instrument_id" ON "parts" ("instrument_id");
 CREATE TABLE IF NOT EXISTS "instruments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar DEFAULT NULL, "rank" integer DEFAULT NULL, "family" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
 CREATE INDEX "index_instruments_on_rank" ON "instruments" ("rank");
 CREATE UNIQUE INDEX "index_works_on_title" ON "works" ("title");
+CREATE TABLE IF NOT EXISTS "liner_notes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "note" text, "work_id" integer);
+CREATE INDEX "index_liner_notes_on_work_id" ON "liner_notes" ("work_id");
 INSERT INTO "schema_migrations" (version) VALUES
+('20250205154319'),
 ('20250131144421'),
 ('20250129125443'),
 ('20250129125141'),
