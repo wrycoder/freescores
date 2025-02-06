@@ -29,6 +29,19 @@ RSpec.describe WorksController do
 
   before :each do
     build_catalog
+    if !ENV['FILE_HOST'].nil?
+      @original_file_host = ENV['FILE_HOST']
+    else
+      ENV['FILE_HOST'] = 'ourserver.com'
+      @original_file_host = nil
+    end
+
+    if !ENV['FILE_ROOT'].nil?
+      @original_file_root = ENV['FILE_ROOT']
+    else
+      ENV['FILE_ROOT'] = 'recordings/mp3'
+      @original_file_root = nil
+    end
   end
 
   after :each do
@@ -36,6 +49,9 @@ RSpec.describe WorksController do
     expect(Work.count).to eq(0)
     expect(Part.count).to eq(0)
     Instrument.destroy_all
+    Genre.destroy_all
+    ENV['FILE_HOST'] = @original_file_host
+    ENV['FILE_ROOT'] = @original_file_root
   end
 
   context "when displaying a single work" do
@@ -60,6 +76,32 @@ RSpec.describe WorksController do
       work.save!
       get "/works/#{work.id}"
       expect(response.body).to match(/violin, cello, and piano/)
+      Genre.destroy_all
+    end
+
+    it "gives a logged-in user access to the liner note" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      Work.destroy_all
+      Instrument.destroy_all
+      genre = create(:genre)
+      instrument = create(:instrument)
+      work = build(:work, genre_id: genre.id)
+      work.add_instruments({ instrument => 1 })
+      work.save!
+      get work_path(work)
+      expect(response).to have_http_status(:success)
+      log_in_through_controller
+      get work_path(work)
+      expect(response.body).to match(/#{work.title}/)
+      expect(response.body).to match(/Add Liner Note/)
+      ln = create(:liner_note, work_id: work.id,
+                  note: Cicero.words(50))
+      get work_path(work)
+      expect(response.body).to match(/Edit Liner Note/)
+      Work.destroy_all
+      Instrument.destroy_all
+      Genre.destroy_all
+      ENV['ADMIN_PASSWORD'] = nil
     end
   end
 
@@ -74,8 +116,8 @@ RSpec.describe WorksController do
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:genre_id).first
       first_item = page.css('.works_list_row_1')[0]
-      title = first_item.children[1].children[0]
-      expect(title).to match(/#{first_record.title}/)
+      title_node = first_item.children[1].children[1].children[0]
+      expect(title_node).to match(/#{first_record.title}/)
     end
 
     it "sorts by year composed, descending" do
@@ -83,12 +125,83 @@ RSpec.describe WorksController do
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:composed_in).last
       first_item = page.css('.works_list_row_1')[0]
-      title = first_item.children[1].children[0]
-      expect(title).to match(/#{first_record.title}/)
+      title_node = first_item.children[1].children[1].children[0]
+      expect(title_node).to match(/#{first_record.title}/)
     end
   end
 
   context "when creating new works" do
+    it "screens for duplicates" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      log_in_through_controller
+      genre = Genre.where(vocal: false).first
+      instrument = Instrument.first
+      title = "Something Fancy"
+      work = build(:work, title: title, genre_id: genre.id)
+      work.add_instruments({ instrument => 1 })
+      work.save!
+      post works_path, params: {
+        work: {
+          genre_id: genre.id,
+          title: title,
+          score_link: "fancy.pdf",
+          composed_in: 1978,
+          parts_attributes: {
+            "0": { "instrument_id": instrument.id,
+                   "quantity": 1 },
+            "1": { "instrument_id": "",
+                   "quantity": 1 },
+            "2": { "instrument_id": "",
+                   "quantity": 1 },
+            "3": { "instrument_id": "",
+                   "quantity": 1 },
+            "4": { "instrument_id": "",
+                   "quantity": 1 },
+            "5": { "instrument_id": "",
+                   "quantity": 1 },
+          }
+        }
+      }
+      expect(response).to have_http_status(:bad_request)
+      expect(flash[:alert]).to match(/That title is already taken/)
+      ENV["ADMIN_PASSWORD"] = nil
+    end
+
+    it "correctly validates lyricist" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      initial_work_count = Work.count
+      genre = create(:genre, name: 'Art Song', vocal: true)
+      soprano = create(:instrument, name: 'soprano', family: 'vocal')
+      piano = Instrument.find_by_name('piano')
+      log_in_through_controller
+      post works_path, params: {
+        work: {
+          genre_id: genre.id,
+          title: 'Bada Bing',
+          score_link: "bada_bing.pdf",
+          composed_in: 1974,
+          parts_attributes: {
+            "0": { "instrument_id": soprano.id,
+                   "quantity": 1 },
+            "1": { "instrument_id": piano.id,
+                   "quantity": 1 },
+            "2": { "instrument_id": "",
+                   "quantity": 1 },
+            "3": { "instrument_id": "",
+                   "quantity": 1 },
+            "4": { "instrument_id": "",
+                   "quantity": 1 },
+            "5": { "instrument_id": "",
+                   "quantity": 1 },
+          }
+        }
+      }
+      expect(response).to have_http_status(:bad_request)
+      expect(flash[:alert]).to match(/The music could not be added/)
+      expect(Work.count).to eq(initial_work_count)
+      ENV["ADMIN_PASSWORD"] = nil
+    end
+
     it "accurately handles instrumental parts" do
       initial_work_count = Work.count
       initial_part_count = Part.count

@@ -100,5 +100,54 @@ RSpec.describe Work, type: :model do
       expect(ensemble[1][1]).to match(/contrabass/)
       expect(ensemble[2][1]).to match(/piano/)
     end
+
+    it "raises an error if the file host variable is not set" do
+      if !ENV['FILE_ROOT'].nil?
+        original_file_root = ENV['FILE_ROOT']
+      else
+        original_file_root = nil
+        ENV['FILE_ROOT'] = 'recordings/mp3'
+      end
+      genre = create(:genre)
+      sonata = build(:work, genre_id: genre.id, recording_link: 'sonata.mp3')
+      expect { sonata.formatted_recording_link }.to raise_error(RuntimeError)
+      Genre.destroy_all
+      ENV['FILE_ROOT'] = original_file_root
+    end
+
+    it "raises an error if the file root variable is not set" do
+      if !ENV['FILE_HOST'].nil?
+        original_file_host = ENV['FILE_HOST']
+      else
+        original_file_host = nil
+        ENV['FILE_HOST'] = 'ourserver.com'
+      end
+      genre = build(:genre)
+      concerto = build(:work, genre_id: genre.id, recording_link: 'foobar.mp3')
+      expect { concerto.formatted_recording_link }.to raise_error(RuntimeError)
+      Genre.destroy_all
+      ENV['FILE_HOST'] = original_file_host
+    end
+
+    it "correctly formats the link to the score" do
+      if !ENV['FILE_ROOT'].nil?
+        original_file_root = ENV['FILE_ROOT']
+      else
+        original_file_root = nil
+        ENV['FILE_ROOT'] = 'recordings/mp3'
+      end
+      if !ENV['FILE_HOST'].nil?
+        original_file_host = ENV['FILE_HOST']
+      else
+        original_file_host = nil
+        ENV['FILE_HOST'] = 'ourserver.com'
+      end
+      genre = create(:genre)
+      suite = build(:work, genre_id: genre.id, score_link: 'foobar.pdf')
+      expect(suite.formatted_score_link).to match(/foobar\.pdf/)
+      Genre.destroy_all
+      ENV['FILE_ROOT'] = original_file_root
+      ENV['FILE_HOST'] = original_file_host
+    end
   end
 end
