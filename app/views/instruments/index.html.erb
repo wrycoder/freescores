@@ -1,9 +1,9 @@
 <% provide(:title, "Instruments") %>
-<div class="row col-md-12">
-  <div class="col-md-4"><h3>Name</h3></div>
-  <div class="col-md-4"><h3>Family</h3></div>
-  <div class="col-md-4"><h3>Rank</h3></div>
-</div>
-<div class="row col-md-12">
+<span class="row col-md-10 float-end">
+  <span class="col-md-4"><h3>Name</h3></span>
+  <span class="col-md-4"><h3>Family</h3></span>
+  <span class="col-md-2"><h3>Rank</h3></span>
+</span>
+<span class="row col-md-10">
   <%= render partial: "instrument", collection: @instruments %>
-</div>
+</span>

@@ -1,42 +1,42 @@
-<span class="row col-md-12">
+<span class="row col-md-10 float-end">
   <span class="col-md-8">
     <h2><%= @work.title %></h2>
   </span>
   <span class="col-md-1 small">
     <%= @work.ascap? ? image_tag('ASCAP-small.png') + "registered" : '' %>
   </span>
-  <span class="col-md-3"></span>
+  <span class="col-md-1"></span>
 </span>
-<span class="row col-md-12">
+<span class="row col-md-10 float-end">
   <span class="col-md-2 text-md-end vertically-center-right-justified">
     <h4>Forces</h4>
   </span>
-  <span class="col-md-10 text-left vertically-center-left-justified">
+  <span class="col-md-8 text-left vertically-center-left-justified">
     <%= oxford_list(@work.list_instruments) %>
   </span>
 </span>
-<span class="row col-md-12">
+<span class="row col-md-10 float-end">
   <span class="col-md-2 text-md-end vertically-center-right-justified"><h4>Composed</h4></span>
   <span class="col-md-2 text-left vertically-center-left-justified"><%= @work.composed_in %></span>
   <span class="col-md-2 text-md-end vertically-center-right-justified">
     <h4><%= !@work.revised_in.nil? ? "Revised" : "" %></h4>
   </span>
-  <span class="col-md-2 text-left vertically-center-left-justified">
+  <span class="col-md-1 text-left vertically-center-left-justified">
     <%= !@work.revised_in.nil? ? @work.revised_in : "" %>
   </span>
-  <span class="col-md-4">
+  <span class="col-md-3">
     <%= @work.genre.vocal? ? "(Text by #{@work.lyricist})" : "" %>
   </span>
 </span>
 <% if !@work.score_link.nil? %>
-  <span class="row col-md-12">
+  <span class="row col-md-10 float-end">
     <span class="col-md-2 text-md-end">A score is available</span>
-    <span class="col-md-10 text-left"><%= @work.formatted_score_link %></span>
+    <span class="col-md-8 text-left"><%= @work.formatted_score_link %></span>
   </span>
 <% end %>
 <% if !@work.recording_link.nil? %>
-  <span class="row col-md-12">
+  <span class="row col-md-10 float-end">
     <span class="col-md-2 text-md-end">A recording is available</span>
-    <span class="col-md-10 text-left"><%= @work.formatted_recording_link %></span>
+    <span class="col-md-8 text-left"><%= @work.formatted_recording_link %></span>
   </span>
 <% end %>

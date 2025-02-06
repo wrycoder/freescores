@@ -1,11 +1,11 @@
 <% provide(:title, @work.title) %>
 <%= render partial: "work" %>
-<div class="row col-md-12">
+<span class="row col-md-10 float-end">
   <% if LinerNote.where(work_id: @work.id).any? %>
     <%= LinerNote.find_by_work_id(@work.id).note %>
   <% end %>
-</div>
-<div class="row col-md-12">
+</span>
+<span class="row col-md-10 float-end">
   <% if logged_in? %>
     <span class="col-md-2 text-md-end">
     <% if !LinerNote.where(work_id: @work.id).any? %>
@@ -21,4 +21,4 @@
       <% end %>
     </span>
   <% end %>
-</div>
+</span>

@@ -1,7 +1,9 @@
-<%= form_with model: @genre, url: genres_path, method: :post do |f| %>
-  <%= f.label :name %>:
-  <%= f.text_field :name, class: "mb-3" %>
-  <%= f.label :vocal %>:
-  <%= f.check_box :vocal %>
-  <%= f.submit %>
-<% end %>
+<span class="container col-md-10 float-end">
+  <%= form_with model: @genre, url: genres_path, method: :post do |f| %>
+    <%= f.label :name %>:
+    <%= f.text_field :name, class: "mb-3" %>
+    <%= f.label :vocal %>:
+    <%= f.check_box :vocal %>
+    <%= f.submit %>
+  <% end %>
+</span>

@@ -1,86 +1,83 @@
-<div class="row col-md-12">
-  <div class="col-md-1"></div>
-  <div class="col-md-10">
-    <%= form_with model: @work, method: method.to_sym do |f| %>
-      <%= fields_for :work do |work_form| %>
-      <span class="row col-md-10 bg-dark">
-        <span class="col-md-1">
-          <%= work_form.label :title, class: "fw-bold text-white-50" %>
-        </span>
-        <span class="col-md-5">
-          <%= work_form.text_field :title, class: "mb-3" %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.label :composed_in, class: "fw-bold text-white-50" %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.select :composed_in,
-              options_for_select((1955..2050).to_a.map{|y| ["#{y}", y]},
-              (!@work.nil? ? @work.composed_in : 1955 )) %>
-        </span>
+<span class="container col-md-10 float-end">
+  <%= form_with model: @work, method: method.to_sym do |f| %>
+    <%= fields_for :work do |work_form| %>
+    <span class="row col-md-10 bg-dark">
+      <span class="col-md-1">
+        <%= work_form.label :title, class: "fw-bold text-white-50" %>
       </span>
-      <span class="row col-md-10 bg-dark">
-        <span class="col-md-2">
-          <%= work_form.label :ascap, class: "fw-bold text-white-50" %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.check_box :ascap %>
-        </span>
-        <span class="col-md-2"></span>
-        <span class="col-md-2">
-          <%= work_form.label :revised_in, class: "fw-bold text-white-50" %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.select :revised_in,
-              options_for_select((1955..2050).to_a.map{|y| ["#{y}", y]}),
-              include_blank: true %>
-        </span>
+      <span class="col-md-5">
+        <%= work_form.text_field :title, class: "mb-3" %>
       </span>
-      <span class="row col-md-10 bg-dark">
-        <span class="col-md-2">
-          <%= work_form.label :genre_id, "Genre",
-            class: "fw-bold text-white-50 vertically-center-right-justified" %>
-        </span>
-        <span class="col-md-3">
-          <%= work_form.collection_select :genre_id, Genre.all,
-              :id, :name, {prompt: true},
-              {class: "genre-selector"}  %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.label :lyricist, "Lyricist",
-                class: "fw-bold text-white-50 vertically-center-right-justified" %>
-        </span>
-        <span class="col-md-3">
-          <%= work_form.text_field :lyricist, class: "mb-3" %>
-        </span>
+      <span class="col-md-2">
+        <%= work_form.label :composed_in, class: "fw-bold text-white-50" %>
       </span>
-      <span class="row col-md-10 bg-dark">
-        <span class="col-md-2">
-          <%= work_form.label :score_link, "PDF Score",
-               class: "fw-bold text-white-50 vertically-center-right-justified" %>
-        </span>
-        <span class="col-md-3">
-          <%= work_form.text_field :score_link, class: "mb-3" %>
-        </span>
-        <span class="col-md-2">
-          <%= work_form.label :recording_link, "Recording",
-               class: "fw-bold text-white-50 vertically-center-right-justified" %>
-        </span>
-        <span class="col-md-3">
-          <%= work_form.text_field :recording_link, class: "mb-3" %>
-        </span>
+      <span class="col-md-2">
+        <%= work_form.select :composed_in,
+            options_for_select((1955..2050).to_a.map{|y| ["#{y}", y]},
+            (!@work.nil? ? @work.composed_in : 1955 )) %>
       </span>
-      <span class="row col-md-10 bg-dark">
-        <span class="col-md-10 fw-bold text-white-50 align-items-center">Parts</span>
+    </span>
+    <span class="row col-md-10 bg-dark">
+      <span class="col-md-2">
+        <%= work_form.label :ascap,
+           class: "fw-bold text-white-50 float-end text-uppercase" %>
       </span>
-        <%= f.fields_for :parts do |builder| %>
-          <%= render "parts_fields", :f => builder %>
-        <% end %>
+      <span class="col-md-2 float-start">
+        <%= work_form.check_box :ascap %>
+      </span>
+      <span class="col-md-2"></span>
+      <span class="col-md-2">
+        <%= work_form.label :revised_in, class: "fw-bold text-white-50" %>
+      </span>
+      <span class="col-md-2">
+        <%= work_form.select :revised_in,
+            options_for_select((1955..2050).to_a.map{|y| ["#{y}", y]}),
+            include_blank: true %>
+      </span>
+    </span>
+    <span class="row col-md-10 bg-dark">
+      <span class="col-md-2">
+        <%= work_form.label :genre_id, "Genre",
+          class: "fw-bold text-white-50 vertically-center-right-justified" %>
+      </span>
+      <span class="col-md-3">
+        <%= work_form.collection_select :genre_id, Genre.all,
+            :id, :name, {prompt: true},
+            {class: "genre-selector"}  %>
+      </span>
+      <span class="col-md-2">
+        <%= work_form.label :lyricist, "Lyricist",
+              class: "fw-bold text-white-50 vertically-center-right-justified" %>
+      </span>
+      <span class="col-md-3">
+        <%= work_form.text_field :lyricist, class: "mb-3" %>
+      </span>
+    </span>
+    <span class="row col-md-10 bg-dark">
+      <span class="col-md-2">
+        <%= work_form.label :score_link, "PDF Score",
+             class: "fw-bold text-white-50 vertically-center-right-justified" %>
+      </span>
+      <span class="col-md-3">
+        <%= work_form.text_field :score_link, class: "mb-3" %>
+      </span>
+      <span class="col-md-2">
+        <%= work_form.label :recording_link, "Recording",
+             class: "fw-bold text-white-50 vertically-center-right-justified" %>
+      </span>
+      <span class="col-md-3">
+        <%= work_form.text_field :recording_link, class: "mb-3" %>
+      </span>
+    </span>
+    <span class="row col-md-10 bg-dark">
+      <span class="col-md-10 fw-bold text-white-50 align-items-center">Parts</span>
+    </span>
+      <%= f.fields_for :parts do |builder| %>
+        <%= render "parts_fields", :f => builder %>
       <% end %>
-      <span class="row col-md-10">
-        <%= f.submit %>
-      </span>
     <% end %>
-  </div>
-  <div class="col-md-1"></div>
-</div>
+    <span class="row col-md-10">
+      <%= f.submit %>
+    </span>
+  <% end %>
+</span>

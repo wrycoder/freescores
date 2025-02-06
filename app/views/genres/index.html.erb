@@ -1,10 +1,10 @@
 <% provide(:title, "Genres") %>
-<div class="row col-md-12">
-  <div class="col-md-8">
+<span class="row col-md-10 float-end">
+  <span class="col-md-7">
     <h3>Name</h3>
-  </div>
-  <div class="col-md-4">
+  </span>
+  <span class="col-md-3">
     <h3>Vocal?</h3>
-  </div>
-</div>
+  </span>
+</span>
 <%= render collection: @genres, partial: 'genre' %>

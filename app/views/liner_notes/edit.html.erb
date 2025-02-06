@@ -1,5 +1,5 @@
 <% provide(:title, "Add liner note for #{@work.title}") %>
-<div class="row col-md-10">
+<span class="row col-md-10 float-end">
   <%= form_with(model: @liner_note) do |f| %>
     <%= f.hidden_field :work_id, value: @liner_note.work_id %>
     <span class="row col-md-10">
@@ -12,4 +12,4 @@
       <%= f.submit "Let it be Written!" %>
     </span>
   <% end %>
-</div>
+</span>

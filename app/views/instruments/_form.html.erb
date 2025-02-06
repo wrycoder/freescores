@@ -1,14 +1,39 @@
-<%= form_with model: @instrument, url: instruments_path, method: :post do |f| %>
-  <%= fields_for :instrument do |i| %>
-    <%= i.label :name %>
-    <%= i.text_field :name %>
-    <%= i.label :family %>
-    <%= i.text_field :family %>
-    <%= i.label :rank %>
-    <%= i.select :rank,
-      options_for_select(
-        (10..2500).step(10).to_a.map{|s| ["#{s}", s]}) %>
+<span class="container col-md-10 float-end">
+  <%= form_with model: @instrument, url: instruments_path, method: :post do |f| %>
+    <%= fields_for :instrument do |i| %>
+      <span class="row col-md-10">
+        <span class="col-md-2">
+          <%= i.label :name, class: "float-end" %>
+        </span>
+        <span class="col-md-8 float-start">
+          <%= i.text_field :name %>
+        </span>
+      </span>
+      <span class="row col-md-10">
+        <span class="col-md-2">
+          <%= i.label :family, class: "float-end" %>
+        </span>
+        <span class="col-md-8 float-start">
+          <%= i.text_field :family %>
+        </span>
+      </span>
+      <span class="row col-md-10">
+        <span class="col-md-2">
+          <%= i.label :rank, class: "float-end" %>
+        </span>
+        <span class="col-md-8 float-start">
+        <%= i.select :rank,
+          options_for_select(
+            (10..2500).step(10).to_a.map{|s| ["#{s}", s]}) %>
+        </span>
+      </span>
+    <% end %>
+    <span class="row col-md-10">
+      <span class="col-md-2"></span>
+      <span class="col-md-7">
+        <%= f.submit "Update" %>
+      </span>
+      <span class="col-md-1"></span>
+    </span>
   <% end %>
-  <%= f.submit "Update" %>
-<% end %>
-
+</span>
