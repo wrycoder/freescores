@@ -1,10 +1,15 @@
 <% provide(:title, "Add a new work") %>
-<% if @work.errors.any? %>
-  <% @work.errors.full_messages.each do |msg| %>
-    <ul>
-      <li><%= msg %>
-    </ul>
-  <% end %>
-<% end %>
-
-<%= render partial: "form", locals: { method: 'post'} %>
+<div class="row col-md-12">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <% if @work.errors.any? %>
+      <% @work.errors.full_messages.each do |msg| %>
+        <ul>
+          <li><%= msg %>
+        </ul>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-md-1"></div>
+  <%= render partial: "form", locals: { method: 'post'} %>
+</div>
