@@ -14,7 +14,7 @@
     <% row_identifier = "works_list_row_" + (index + 1).to_s %>
     <%= tag.div class: "row #{row_identifier}" do %>
       <div class="col">
-        <%= formatted_title(work) %>
+        <%= link_to formatted_title(work), work_path(work) %>
       </div>
       <div class="col text-center">
         <%= work.composed_in %>
