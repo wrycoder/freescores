@@ -112,7 +112,7 @@ RSpec.describe WorksController do
     end
 
     it "sorts by genre_id" do
-      get works_path({ :sort_key => :genre_id })
+      get works_path({ :sort_key => :genre_id, :order => :ascending })
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:genre_id).first
       first_item = page.css('.works_list_row_1')[0]
@@ -121,7 +121,7 @@ RSpec.describe WorksController do
     end
 
     it "sorts by year composed, descending" do
-      get works_path({ :sort_key => :composed_in, :descending => true })
+      get works_path({ :sort_key => :composed_in, :order => :descending })
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:composed_in).last
       first_item = page.css('.works_list_row_1')[0]

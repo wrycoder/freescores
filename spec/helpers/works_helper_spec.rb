@@ -34,6 +34,13 @@ describe WorksHelper, type: :helper do
   end
 
   it "should highlight the current sort_key column" do
+    if !ENV['FILE_HOST'].nil?
+      @original_file_host = ENV['FILE_HOST']
+    else
+      ENV['FILE_HOST'] = '3.139.72.192:8181'
+      @original_file_host = nil
+    end
+
     current_url = 'https://sowash.com/works?sort_key=title&order=ascending'
     result = sorted_column_headers(current_url)
     expect(result[:title][0]).to match(/Title⬆️/)
@@ -49,29 +56,37 @@ describe WorksHelper, type: :helper do
     expect(result[:composed_in][0]).to match(/Composed⬆️/)
     expect(result[:title][0]).to_not match(/[⬇️,⬆️]/)
     expect(result[:genre_id][0]).to_not match(/[⬇️,⬆️]/)
+    ENV['FILE_HOST'] = @original_file_host
   end
 
   it "should build a link from a hash of column header options" do
+    if !ENV['FILE_HOST'].nil?
+      @original_file_host = ENV['FILE_HOST']
+    else
+      ENV['FILE_HOST'] = '3.139.72.192:8181'
+      @original_file_host = nil
+    end
     current_url = 'https://sowash.com/works?sort_key=composed_in&order=descending'
     headers = sorted_column_headers(current_url)
     expect(header_link(headers[:title])).to match(
-      /sowash\.com\/works\?sort_key=title&order=ascending/
+      /\/works\?sort_key=title&order=ascending/
     )
     expect(header_link(headers[:composed_in])).to match(
-      /sowash\.com\/works\?sort_key=composed_in&order=ascending/
+      /\/works\?sort_key=composed_in&order=ascending/
     )
     current_url = 'https://sowash.com/works?sort_key=composed_in&order=ascending'
     headers = sorted_column_headers(current_url)
     expect(header_link(headers[:composed_in])).to match(
-      /sowash\.com\/works\?sort_key=composed_in&order=descending/
+      /\/works\?sort_key=composed_in&order=descending/
     )
     current_url = 'https://sowash.com/works?sort_key=genre_id&order=descending'
     headers = sorted_column_headers(current_url)
     expect(header_link(headers[:genre_id])).to match(
-      /sowash\.com\/works\?sort_key=genre_id&order=ascending/
+      /\/works\?sort_key=genre_id&order=ascending/
     )
     expect(header_link(headers[:title])).to match(
-      /sowash\.com\/works\?sort_key=title&order=ascending/
+      /\/works\?sort_key=title&order=ascending/
     )
+    ENV['FILE_HOST'] = @original_file_host
   end
 end

@@ -71,6 +71,6 @@ module WorksHelper
   end
 
   def header_link(header_keys)
-    return 'https://sowash.com/works?' + header_keys[1] + '&' + header_keys[2]
+    return 'https://' + ENV['FILE_HOST'] + '/works?' + header_keys[1] + '&' + header_keys[2]
   end
 end

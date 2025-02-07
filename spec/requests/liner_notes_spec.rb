@@ -30,7 +30,6 @@ RSpec.describe "LinerNotes", type: :request do
       get new_liner_note_path + "?work_id=12352"
       expect(response).to have_http_status(:redirect)
       expect(flash[:alert]).to match(/Invalid work/)
-      follow_redirect!
     end
 
     it "allows user to create a new liner note" do

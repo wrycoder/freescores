@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export ADMIN_PASSWORD=password
-export FILE_HOST=www.sowash.com
+export FILE_HOST=3.139.72.192:8181
 export FILE_ROOT=recordings/mp3
 
 $@
