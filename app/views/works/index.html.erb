@@ -1,25 +1,31 @@
-<span class="container works_list col-md-10 float-end">
+<span class="container w-100 works_list col-md-10 float-end">
   <div class="row">
-    <div class="col">
-      <h2>Title</h2>
+    <h4>Free sheet music for Rick Sowash's works</h4>
+    <%= render partial: 'preamble' %>
+  </div>
+  <% headers = sorted_column_headers(request.original_url) %>
+  <div class="row">
+    <div class="col-md-5">
+      <h4><%= link_to headers[:title][0], header_link(headers[:title]) %></h4>
     </div>
-    <div class="col text-center">
-      <h2>Composed In</h2>
+    <div class="col-md-2 text-center">
+      <h4><%= link_to headers[:composed_in][0],
+              header_link(headers[:composed_in]) %></h4>
     </div>
-    <div class="col">
-      <h2>Instrumentation</h2>
+    <div class="col-md-3">
+      <h4><%= link_to headers[:genre_id][0], header_link(headers[:genre_id]) %></h4>
     </div>
   </div>
   <% @works.each_with_index do |work, index| %>
     <% row_identifier = "works_list_row_" + (index + 1).to_s %>
     <%= tag.div class: "row #{row_identifier}" do %>
-      <div class="col">
+      <div class="col-md-5">
         <%= link_to formatted_title(work), work_path(work) %>
       </div>
-      <div class="col text-center">
+      <div class="col-md-2 text-center">
         <%= work.composed_in %>
       </div>
-      <div class="col">
+      <div class="col-md-3">
         <%= oxford_list(work.list_instruments) %>
       </div>
     <% end %>
