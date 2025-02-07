@@ -38,3 +38,12 @@
   align-items: center;  /*Aligns vertically center */
   justify-content: center; /*Aligns horizontally center */
 }
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.composer-homepage-titlebar {
+  background-image: url("https://sowash.com/graphics/splash/cd2.jpg")
+}
