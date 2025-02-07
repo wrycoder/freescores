@@ -1,36 +1,48 @@
 require "rails_helper"
 
 RSpec.describe Work, type: :model do
+
+  before :each do
+    @hurdygurdy = create(:instrument, name: "hurdygurdy")
+  end
+
   after :each do
     Genre.destroy_all
+    Instrument.destroy_all
   end
 
   context "on creation" do
-    it "has a title, genre, year of composition, and a score link" do
+    it "has a title" do
       genre = create(:genre)
-      work = build(:work, composed_in: nil,
-                          title: nil,
-                          score_link: nil,
-                          genre_id: genre.id)
+      work = build(:work, title: nil, genre: genre)
+      work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be false
-      work.composed_in = 1950
       work.title = Cicero.words(6)
+      expect(work.valid?).to be true
+    end
+
+    it "has a genre" do
+      work = build(:work, genre: nil)
+      work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be false
-      work.composed_in = nil
-      work.score_link = 'http://foo.bar.com/' + Cicero.words(1)
+      genre = create(:genre)
+      work.genre = genre
+      expect(work.valid?).to be true
+    end
+
+    it "has a year of composition" do
+      genre = create(:genre)
+      work = build(:work, genre: genre, composed_in: nil)
+      work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be false
-      work.title = nil
-      work.composed_in = 1961
-      expect(work.valid?).to be false
-      work.score_link = nil
-      work.title = Cicero.words(4)
-      expect(work.valid?).to be false
-      work.score_link = 'http://foo.bar.com/' + Cicero.words(1)
-      i = create(:instrument)
-      work.add_instruments({i => 1})
-      work.genre_id = nil
-      expect(work.valid?).to be false
-      work.genre_id = genre.id
+      work.composed_in = 2010
+      expect(work.valid?).to be true
+    end
+
+    it "does not need a score" do
+      genre = create(:genre)
+      work = build(:work, score_link: nil, genre: genre)
+      work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be true
     end
 

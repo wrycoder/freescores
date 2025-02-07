@@ -5,7 +5,6 @@ class Work < ApplicationRecord
   belongs_to :genre
   validates :composed_in, presence: true
   validates :title, presence: true
-  validates :score_link, presence: true
   validates :genre_id, presence: true
   validates_presence_of  :parts, on: :create
   validates :lyricist, presence: true,

@@ -8,8 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-[["Trio",false],["Symphony",false],["String Quartet",false],
- ["Sonata",false],["Part Song",true], ["Hymn",true]].each do |name, vocal|
+[["Trio",false],
+ ["Symphony",false],
+ ["String Quartet",false],
+ ["Concerto", false],
+ ["Sonata",false],
+ ["Part Song",true],
+ ["Hymn",true]].each do |name, vocal|
   Genre.find_or_create_by!(name: name, vocal: vocal)
 end
 
