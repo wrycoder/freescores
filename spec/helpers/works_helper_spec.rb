@@ -32,4 +32,46 @@ describe WorksHelper, type: :helper do
     expect(formatted_title(song)).to match(/\(text by Walt Whitman\)/)
     expect(formatted_title(sonata)).to_not match(/\(text/)
   end
+
+  it "should highlight the current sort_key column" do
+    current_url = 'https://sowash.com/works?sort_key=title&order=ascending'
+    result = sorted_column_headers(current_url)
+    expect(result[:title][0]).to match(/Title⬆️/)
+    expect(result[:genre_id][0]).to_not match(/[⬇️,⬆️]/)
+    expect(result[:composed_in][0]).to_not match(/[⬇️,⬆️]/)
+    current_url = 'https://sowash.com/works?sort_key=genre_id&order=descending'
+    result = sorted_column_headers(current_url)
+    expect(result[:genre_id][0]).to match(/Instrumentation⬇️/)
+    expect(result[:composed_in][0]).to_not match(/[⬇️,⬆️]/)
+    expect(result[:title][0]).to_not match(/[⬇️,⬆️]/)
+    current_url = 'https://sowash.com/works'
+    result = sorted_column_headers(current_url)
+    expect(result[:composed_in][0]).to match(/Composed⬆️/)
+    expect(result[:title][0]).to_not match(/[⬇️,⬆️]/)
+    expect(result[:genre_id][0]).to_not match(/[⬇️,⬆️]/)
+  end
+
+  it "should build a link from a hash of column header options" do
+    current_url = 'https://sowash.com/works?sort_key=composed_in&order=descending'
+    headers = sorted_column_headers(current_url)
+    expect(header_link(headers[:title])).to match(
+      /sowash\.com\/works\?sort_key=title&order=ascending/
+    )
+    expect(header_link(headers[:composed_in])).to match(
+      /sowash\.com\/works\?sort_key=composed_in&order=ascending/
+    )
+    current_url = 'https://sowash.com/works?sort_key=composed_in&order=ascending'
+    headers = sorted_column_headers(current_url)
+    expect(header_link(headers[:composed_in])).to match(
+      /sowash\.com\/works\?sort_key=composed_in&order=descending/
+    )
+    current_url = 'https://sowash.com/works?sort_key=genre_id&order=descending'
+    headers = sorted_column_headers(current_url)
+    expect(header_link(headers[:genre_id])).to match(
+      /sowash\.com\/works\?sort_key=genre_id&order=ascending/
+    )
+    expect(header_link(headers[:title])).to match(
+      /sowash\.com\/works\?sort_key=title&order=ascending/
+    )
+  end
 end
