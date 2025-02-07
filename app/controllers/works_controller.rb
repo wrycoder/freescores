@@ -36,10 +36,11 @@ class WorksController < ApplicationController
 
   def index
     if params[:sort_key].present?
-      if params[:descending].present?
-        @works = Work.all.order({params[:sort_key].to_sym => :desc})
-      else
-        @works = Work.all.order(params[:sort_key])
+      if params[:order].present?
+        trimmed_param = params[:order].sub(/ending/, '')
+        @works = Work.all.order(
+          {params[:sort_key].to_sym => trimmed_param.to_sym}
+        )
       end
     else
       @works = Work.all.sort { |a,b| a.composed_in <=> b.composed_in }
