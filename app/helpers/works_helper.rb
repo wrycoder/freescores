@@ -27,4 +27,50 @@ module WorksHelper
       return work.title
     end
   end
+
+  def sorted_column_headers(url)
+    headers = {
+      :title => [
+        "Title", "sort_key=title", "order=ascending"
+      ],
+      :composed_in => [
+        "Composed⬆️", "sort_key=composed_in", "order=ascending"
+      ],
+      :genre_id => [
+        "Instrumentation", "sort_key=genre_id", "order=ascending"
+      ]
+    }
+    if !(/sort_key/ =~ url).nil?
+      key_match = /sort_key=(.+)&/.match(url)
+      if !key_match.nil?
+        key = key_match[1]
+        if !(/descending/ =~ url).nil?
+          arrow = "⬇️"
+          other_order = "ascending"
+        else
+          arrow = "⬆️ "
+          other_order = "descending"
+        end
+        if key == "genre_id"
+          headers[key.to_sym][0] = "Instrumentation" + arrow
+          headers[:title][0] = "Title"
+          headers[:composed_in][0] = "Composed"
+        elsif key == "composed_in"
+          headers[key.to_sym][0] = "Composed" + arrow
+          headers[:genre_id][0] = "Instrumentation"
+          headers[:title][0] = "Title"
+        else
+          headers[key.to_sym][0] = "Title" + arrow
+          headers[:composed_in][0] = "Composed"
+          headers[:genre_id][0] = "Instrumentation"
+        end
+        headers[key.to_sym][2] = "order=" + other_order
+      end
+    end
+    return headers
+  end
+
+  def header_link(header_keys)
+    return 'https://sowash.com/works?' + header_keys[1] + '&' + header_keys[2]
+  end
 end
