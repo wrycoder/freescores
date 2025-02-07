@@ -75,6 +75,12 @@ class Work < ApplicationRecord
   end
 
   def self.build_from_params(params)
+    if params.has_key?("score_link") && params["score_link"].empty?
+      params["score_link"] = nil
+    end
+    if params.has_key?("recording_link") && params["recording_link"].empty?
+      params["recording_link"] = nil
+    end
     work = Work.new(
       title: params["title"],
       genre_id: params["genre_id"],
