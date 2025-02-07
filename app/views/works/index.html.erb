@@ -20,7 +20,8 @@
     <% row_identifier = "works_list_row_" + (index + 1).to_s %>
     <%= tag.div class: "row #{row_identifier}" do %>
       <div class="col-md-5">
-        <%= link_to formatted_title(work), work_path(work) %>
+        <%= link_to formatted_title(work), work_path(work),
+             class: "link-opacity-25-hover link-underline link-underline-opacity-0" %>
       </div>
       <div class="col-md-2 text-center">
         <%= work.composed_in %>
