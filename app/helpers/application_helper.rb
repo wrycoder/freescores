@@ -9,4 +9,27 @@ module ApplicationHelper
     end
   end
 
+  def composer_menu_prompts(key)
+    prompts = {
+      :books        => [
+        "https://sowash.com/graphics/menu/menu3a.gif",
+        "https://sowash.com/books/index.html"],
+      :cds          => [
+        "https://sowash.com/graphics/menu/menu1a.gif",
+        "https://sowash.com/recordings/index.html"],
+      :sheetmusic   => [
+        "https://sowash.com/graphics/menu/menu2a.gif",
+        "https://sowash.com/scores/index.html"],
+      :filmscores   => [
+        "https://sowash.com/graphics/menu/menu9a.gif",
+        "https://sowash.com/filmscore/index.html"],
+      :contact      => [
+        "https://sowash.com/graphics/menu/menu6a.gif",
+        "https://sowash.com/author/contact.html"],
+      :home         => [
+        "https://sowash.com/graphics/menu/menu7a.gif",
+        "https://sowash.com/index.html"]
+    }
+    return prompts[key]
+  end
 end
