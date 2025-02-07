@@ -35,6 +35,9 @@
         <!-- more of Rick's content -->
        <%= image_tag "https://sowash.com/graphics/menu/title4.gif" %>
         <span class="d-flex flex-column">
+          <% if !(/\/([0-9]+$)|(genres)|(instruments)/ =~ request.original_url).nil? %>
+            <%= link_to "All scores", works_path %>
+          <% end %>
           <% if logged_in? %>
             <%= link_to "Dashboard", dashboard_path, class: "float-end" %>
           <% end %>
