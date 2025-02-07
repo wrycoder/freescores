@@ -237,7 +237,6 @@ RSpec.describe WorksController do
         work: {
           genre_id: Genre.first.id,
           title: Cicero.words(4),
-          score_link: "more_music,pdf",
           composed_in: 1978,
           parts_attributes: {
             "0": { "instrument_id": Instrument.first.id,
@@ -258,8 +257,39 @@ RSpec.describe WorksController do
       expect(response).to have_http_status(:success)
       expect(Work.count).to eq(initial_work_count + 1)
       expect(Part.count).to eq(initial_part_count + 2)
+      expect(Work.last.score_link.nil?).to be true
       Work.destroy_all
       expect(Part.count).to eq(0)
+      ENV["ADMIN_PASSWORD"] = nil
+    end
+
+    it "ignores blank form inputs" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      log_in_through_controller
+      post works_path, params: {
+        work: {
+          genre_id: Genre.first.id,
+          title: Cicero.words(4),
+          composed_in: 1978,
+          score_link: "",
+          parts_attributes: {
+            "0": { "instrument_id": Instrument.first.id,
+                   "quantity": 1 },
+            "1": { "instrument_id": Instrument.last.id,
+                   "quantity": 1 },
+            "2": { "instrument_id": "",
+                   "quantity": 1 },
+            "3": { "instrument_id": "",
+                   "quantity": 1 },
+            "4": { "instrument_id": "",
+                   "quantity": 1 },
+            "5": { "instrument_id": "",
+                   "quantity": 1 }
+          }
+        }
+      }
+      expect(response).to have_http_status(:success)
+      expect(Work.last.score_link.nil?).to be true
       ENV["ADMIN_PASSWORD"] = nil
     end
   end
