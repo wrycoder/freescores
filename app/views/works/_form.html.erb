@@ -1,7 +1,7 @@
-<span class="container col-md-10 float-end">
+<span class="container w-100 col-md-10 float-end">
   <%= form_with model: @work, method: method.to_sym do |f| %>
     <%= fields_for :work do |work_form| %>
-    <span class="row col-md-10 bg-dark">
+    <span class="row w-100 col-md-10 bg-dark">
       <span class="col-md-1">
         <%= work_form.label :title, class: "fw-bold text-white-50" %>
       </span>
