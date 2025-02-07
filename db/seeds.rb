@@ -16,8 +16,10 @@ end
 [
   ["piccolo", 200, "woodwind"],
   ["flute", 210, "woodwind"],
+  ["recorder", 225, "woodwind"],
   ["oboe", 250, "woodwind"],
   ["English horn", 275, "woodwind"],
+  ["clarinet", 280, "woodwind"],
   ["bassoon", 300, "woodwind"],
   ["contrabassoon", 310, "woodwind"],
   ["trumpet", 410, "brass"],
@@ -30,12 +32,27 @@ end
   ["cello", 490, "strings"],
   ["double bass", 500, "strings"],
   ["soprano", 10, "vocal"],
+  ["mezzo-soprano", 14, "vocal"],
   ["alto", 20, "vocal"],
   ["tenor", 30, "vocal"],
+  ["baritone", 32, "vocal"],
   ["bass", 35, "vocal"],
+  ["piano", 510, "keyboard"],
+  ["harpsichord", 515, "keyboard"],
+  ["woodwind ensemble", 520, "instrumental ensemble"],
+  ["brass quintet", 525, "instrumental ensemble"],
+  ["string trio", 550, "instrumental ensemble"],
+  ["string ensemble", 555, "instrumental ensemble"],
+  ["string quartet", 560, "instrumental ensemble"],
+  ["chamber orchestra", 570, "instrumental ensemble"],
+  ["orchestra", 580, "instrumental ensemble"],
   ["SATB choir", 40, "vocal ensemble"],
+  ["SSATB choir", 41, "vocal ensemble"],
+  ["STB choir", 42, "vocal ensemble"],
+  ["SAB choir", 44, "vocal ensemble"],
   ["SSAA choir", 45, "vocal ensemble"],
-  ["TTBB choir", 50, "vocal ensemble"]
+  ["TTBB choir", 50, "vocal ensemble"],
+  ["mixed voice choir", 51, "vocal ensemble"]
 ].each do |name, rank, family|
   Instrument.find_or_create_by!(
     name: name, rank: rank, family: family
