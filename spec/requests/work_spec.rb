@@ -320,17 +320,22 @@ RSpec.describe WorksController do
     it "updates a work correctly" do
       test_work = Work.first
       expect(test_work.revised_in.nil?).to be true
+      test_work.update(score_link: nil, recording_link: nil)
       ENV["ADMIN_PASSWORD"] = 'password'
       log_in_through_controller
       patch work_url({:id => test_work.id}), params: {
         :work => {
           :revised_in => 2013,
-          :ascap => true
+          :ascap => true,
+          :score_link => "",
+          :recording_link => ""
         }
       }
       expect(response).to have_http_status(:success)
       test_work.reload
       expect(test_work.revised_in).to eq(2013)
+      expect(test_work.score_link.nil?).to be true
+      expect(test_work.recording_link.nil?).to be true
       expect(test_work.ascap?).to be true
       ENV["ADMIN_PASSWORD"] = nil
     end
