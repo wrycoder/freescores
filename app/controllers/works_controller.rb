@@ -58,7 +58,13 @@ class WorksController < ApplicationController
   def update
     @work = Work.find(params[:id])
     begin
-      @work.update!(work_params)
+      empties = []
+      work_params.each do |wp|
+        if wp[1] == ""
+          empties << wp[0]
+        end
+      end
+      @work.update!(work_params.except(*empties))
     rescue ActiveRecord::ActiveRecordError => ex
       flash.now[:alert] = "Edit failed"
       render "edit", :status => :bad_request and return
