@@ -29,11 +29,18 @@ RSpec.describe WorksController do
 
   before :each do
     build_catalog
-    if !ENV['FILE_HOST'].nil?
-      @original_file_host = ENV['FILE_HOST']
+    if !ENV['APP_HOST'].nil?
+      @original_app_host = ENV['APP_HOST']
     else
-      ENV['FILE_HOST'] = 'ourserver.com'
-      @original_file_host = nil
+      ENV['APP_HOST'] = 'http://ourserver.com'
+      @original_app_host = nil
+    end
+
+    if !ENV['MEDIA_HOST'].nil?
+      @original_media_host = ENV['MEDIA_HOST']
+    else
+      ENV['MEDIA_HOST'] = 'http://ourserver.com'
+      @original_media_host = nil
     end
 
     if !ENV['FILE_ROOT'].nil?
@@ -50,7 +57,8 @@ RSpec.describe WorksController do
     expect(Part.count).to eq(0)
     Instrument.destroy_all
     Genre.destroy_all
-    ENV['FILE_HOST'] = @original_file_host
+    ENV['APP_HOST'] = @original_app_host
+    ENV['MEDIA_HOST'] = @original_media_host
     ENV['FILE_ROOT'] = @original_file_root
   end
 

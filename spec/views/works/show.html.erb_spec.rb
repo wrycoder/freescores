@@ -12,11 +12,11 @@ RSpec.describe "works/show.html.erb", type: :view do
                   rank: 500,
                   family: "woodwind")
 
-    if !ENV['FILE_HOST'].nil?
-      @original_file_host = ENV['FILE_HOST']
+    if !ENV['MEDIA_HOST'].nil?
+      @original_media_host = ENV['MEDIA_HOST']
     else
-      ENV['FILE_HOST'] = 'ourserver.com'
-      @original_file_host = nil
+      ENV['MEDIA_HOST'] = 'http://ourserver.com'
+      @original_media_host = nil
     end
 
     if !ENV['FILE_ROOT'].nil?
@@ -31,7 +31,7 @@ RSpec.describe "works/show.html.erb", type: :view do
     Work.destroy_all
     Instrument.destroy_all
     Genre.destroy_all
-    ENV['FILE_HOST'] = @original_file_host
+    ENV['MEDIA_HOST'] = @original_media_host
     ENV['FILE_ROOT'] = @original_file_root
   end
 

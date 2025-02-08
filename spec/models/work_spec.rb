@@ -158,18 +158,18 @@ RSpec.describe Work, type: :model do
         original_file_root = nil
         ENV['FILE_ROOT'] = 'recordings/mp3'
       end
-      if !ENV['FILE_HOST'].nil?
-        original_file_host = ENV['FILE_HOST']
+      if !ENV['MEDIA_HOST'].nil?
+        original_media_host = ENV['MEDIA_HOST']
       else
-        original_file_host = nil
-        ENV['FILE_HOST'] = 'ourserver.com'
+        original_media_host = nil
+        ENV['MEDIA_HOST'] = 'http://ourserver.com'
       end
       genre = create(:genre)
       suite = build(:work, genre_id: genre.id, score_link: 'foobar.pdf')
       expect(suite.formatted_score_link).to match(/foobar\.pdf/)
       Genre.destroy_all
       ENV['FILE_ROOT'] = original_file_root
-      ENV['FILE_HOST'] = original_file_host
+      ENV['MEDIA_HOST'] = original_media_host
     end
   end
 end
