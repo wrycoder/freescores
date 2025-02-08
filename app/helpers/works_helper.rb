@@ -71,6 +71,6 @@ module WorksHelper
   end
 
   def header_link(header_keys)
-    return 'https://' + ENV['FILE_HOST'] + '/works?' + header_keys[1] + '&' + header_keys[2]
+    return ENV['APP_HOST'] + '/works?' + header_keys[1] + '&' + header_keys[2]
   end
 end
