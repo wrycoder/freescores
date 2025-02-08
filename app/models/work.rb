@@ -48,28 +48,28 @@ class Work < ApplicationRecord
 
   def formatted_recording_link(options = {})
     options[:label] ||= "Recording"
-    if ENV['FILE_HOST'].nil?
-      raise RuntimeError.new("System misconfigured: no FILE_HOST defined")
+    if ENV['MEDIA_HOST'].nil?
+      raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
     link_to(options[:label],
-      "https://" + ENV['FILE_HOST'] + '/' + \
+      ENV['MEDIA_HOST'] + '/' + \
         ENV['FILE_ROOT'] + '/' + recording_link
     )
   end
 
   def formatted_score_link(options = {})
     options[:label] ||= "Score"
-    if ENV['FILE_HOST'].nil?
-      raise RuntimeError.new("System misconfigured: no FILE_HOST defined")
+    if ENV['MEDIA_HOST'].nil?
+      raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
     link_to(options[:label],
-      "https://" + ENV['FILE_HOST'] + '/' + \
+      ENV['MEDIA_HOST'] + '/' + \
         ENV['FILE_ROOT'] + '/' + score_link
     )
   end
