@@ -60,11 +60,11 @@ describe WorksHelper, type: :helper do
   end
 
   it "should build a link from a hash of column header options" do
-    if !ENV['FILE_HOST'].nil?
-      @original_file_host = ENV['FILE_HOST']
+    if !ENV['APP_HOST'].nil?
+      @original_app_host = ENV['APP_HOST']
     else
-      ENV['FILE_HOST'] = '3.139.72.192:8181'
-      @original_file_host = nil
+      ENV['APP_HOST'] = 'http://3.139.72.192:8181'
+      @original_app_host = nil
     end
     current_url = 'https://sowash.com/works?sort_key=composed_in&order=descending'
     headers = sorted_column_headers(current_url)
@@ -87,6 +87,6 @@ describe WorksHelper, type: :helper do
     expect(header_link(headers[:title])).to match(
       /\/works\?sort_key=title&order=ascending/
     )
-    ENV['FILE_HOST'] = @original_file_host
+    ENV['APP_HOST'] = @original_app_host
   end
 end
