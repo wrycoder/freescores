@@ -60,6 +60,13 @@ class WorksController < ApplicationController
     @work = Work.find(params[:id])
   end
 
+  def search
+    search_term = params[:search_term]
+    clause = "title = '%#{search_term}%'"
+    @works = Work.where(clause)
+    render "index"
+  end
+
   def edit
     @work = Work.find(params[:id])
   end
