@@ -84,6 +84,15 @@ class Work < ApplicationRecord
     )
   end
 
+  def written_for?(instrument_name)
+    parts.each do |p|
+      if !(/#{instrument_name}/ =~ p.instrument.name).nil?
+        return true
+      end
+    end
+    return false
+  end
+
   def self.build_from_params(params)
     if params.has_key?("score_link") && params["score_link"].empty?
       params["score_link"] = nil
