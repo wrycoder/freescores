@@ -48,4 +48,12 @@ module SessionsHelper
       return false
     end
   end
+
+  def get_sort_key
+    session[:sort_key] ||= :composed_in
+  end
+
+  def get_scope
+    session[:scope] ||= :recorded
+  end
 end
