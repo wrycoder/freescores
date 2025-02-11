@@ -52,6 +52,10 @@ class Work < ApplicationRecord
     ensemble.sort { |a,b| a[2] <=> b[2] }
   end
 
+  def <=>(other)
+    parts.sort.first <=> other.parts.sort.first
+  end
+
   def formatted_recording_link(options = {})
     options[:label] ||= "Recording"
     if ENV['MEDIA_HOST'].nil?
