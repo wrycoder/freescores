@@ -29,4 +29,20 @@ RSpec.describe SessionsHelper, type: :helper do
     expect(authenticate('foobar')).to be false
     ENV["ADMIN_PASSWORD"] = nil
   end
+
+  it "remembers the user's sort_key" do
+    expect(get_sort_key).to eq(:composed_in)
+    session[:sort_key] = :genre
+    expect(get_sort_key).to eq(:genre)
+    session[:sort_key] = :title
+    expect(get_sort_key).to eq(:title)
+  end
+
+  it "remembers the user's scope" do
+    expect(get_scope).to eq(:recorded)
+    session[:scope] = :all
+    expect(get_scope).to eq(:all)
+    session[:scope] = :solo
+    expect(get_scope).to eq(:solo)
+  end
 end
