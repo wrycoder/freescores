@@ -7,6 +7,7 @@ RSpec.describe Work, type: :model do
   end
 
   after :each do
+    Work.destroy_all
     Genre.destroy_all
     Instrument.destroy_all
   end
@@ -121,6 +122,143 @@ RSpec.describe Work, type: :model do
       expect(ensemble[0][0]).to eq(2)
       expect(ensemble[1][1]).to match(/contrabass/)
       expect(ensemble[2][1]).to match(/piano/)
+    end
+
+    it "is or is not written for a given instrument" do
+      genre = create(:genre, name: "duo sonata", vocal: false)
+      work_1 = build(:work, genre_id: genre.id)
+      work_2 = build(:work, genre_id: genre.id)
+      work_3 = build(:work, genre_id: genre.id)
+      mandolin = create(:instrument, name: "mandolin")
+      violin = create(:instrument, name: "violin")
+      piano = create(:instrument, name: "piano")
+      work_1.add_instruments({mandolin => 1, violin => 1})
+      work_2.add_instruments({violin => 1, piano => 1})
+      work_3.add_instruments({mandolin => 1, piano => 1})
+      work_1.save!
+      work_2.save!
+      work_3.save!
+      expect(work_1.written_for?("piano")).to be false
+      expect(work_1.written_for?("mandolin")).to be true
+      expect(work_2.written_for?("violin")).to be true
+      expect(work_2.written_for?("piano")).to be true
+      expect(work_3.written_for?("violin")).to be false
+      expect(work_3.written_for?("mandolin")).to be true
+    end
+
+    it "can have multiple scopes" do
+      trio_genre = create(:genre, name: "Piano Trio", vocal: false)
+      solo_genre = create(:genre, name: "Solo Sonata", vocal: false)
+      cello = create(:instrument, name: "cello",
+        rank: 200, family: "strings")
+      piano = create(:instrument, name: "piano",
+        rank: 500, family: "keyboard")
+      violin = create(:instrument, name: "violin",
+        rank: 100, family: "strings")
+      unrecorded_work = build(:work,
+        genre: trio_genre,
+        title: Cicero.words(5),
+        recording_link: nil,
+        composed_in: 1969)
+      recorded_work = build(:work,
+        genre: trio_genre,
+        title: Cicero.words(6),
+        recording_link: 'recorded_trio.mp3',
+        composed_in: 2003)
+      cello_work = build(:work,
+        genre: solo_genre,
+        title: Cicero.words(4),
+        recording_link: 'recorded_cello.mp3',
+        composed_in: 2011)
+      hurdygurdy_work = build(:work,
+        genre: solo_genre,
+        title: Cicero.words(7),
+        recording_link: nil,
+        composed_in: 2018)
+      unrecorded_work.add_instruments({
+        violin => 1,
+        cello => 1,
+        piano => 1})
+      unrecorded_work.save!
+      recorded_work.add_instruments({
+        violin => 1,
+        cello => 1,
+        piano => 1})
+      recorded_work.save!
+      cello_work.add_instruments({ cello => 1 })
+      cello_work.save!
+      hurdygurdy_work.add_instruments({ @hurdygurdy => 1 })
+      hurdygurdy_work.save!
+      expect(Work.all.count).to eq(4)
+      expect(Work.recorded.count).to eq(2)
+      expect(Work.recorded
+            .order(:composed_in)
+            .last.id).to eq(cello_work.id)
+      sorted_parts = unrecorded_work.parts
+          .sort { |a,b| a.instrument_rank <=> b.instrument_rank }
+      expect(sorted_parts.first.instrument.name).to match(/violin/)
+      expect(unrecorded_work.parts.last.instrument.name).to match(/piano/)
+    end
+
+    it "can be sorted and filtered in various ways" do
+      ["piano trio", "symphony", "solo concerto", "sonata"].each do |n|
+        create(:genre, name: n)
+      end
+      [ ["orchestra", 800],
+        ["violin", 350],
+        ["viola", 360],
+        ["cello", 370],
+        ["piano", 400],
+        ["contrabass", 380],
+        ["horn", 210],
+        ["trombone", 240]].each do |n, r|
+        create(:instrument, name: n, rank: r)
+      end
+      violin = Instrument.find_by_name("violin")
+      cello = Instrument.find_by_name("cello")
+      piano = Instrument.find_by_name("piano")
+      3.times do
+        w = build(:work,
+          genre: Genre.find_by_name("piano trio"))
+        w.add_instruments({
+          cello => 1,
+          piano => 1,
+          violin => 1
+        })
+        w.save!
+      end
+      2.times do
+        orchestra = Instrument.find_by_name("orchestra")
+        w = build(:work,
+          genre: Genre.find_by_name("symphony"))
+        w.add_instruments({ orchestra => 1 })
+        w.save!
+      end
+      ["violin", "horn", "piano", "cello"].each do |i|
+        instrument = Instrument.find_by_name(i)
+        orchestra = Instrument.find_by_name("orchestra")
+        sonata = build(:work,
+          genre: Genre.find_by_name("sonata"))
+        sonata.add_instruments({ instrument => 1 })
+        sonata.save!
+        concerto = build(:work,
+          genre: Genre.find_by_name("solo concerto"))
+        concerto.add_instruments({
+          instrument => 1,
+          orchestra => 1
+        })
+        concerto.save!
+      end
+      expect(Work.count).to eq(13)
+      sonata_genre = Genre.find_by_name("sonata")
+      symphony_genre = Genre.find_by_name("symphony")
+      horn = Instrument.find_by_name("horn")
+      first_work = Work.all.sort.first
+      expect(first_work.genre).to eq(sonata_genre)
+      expect(first_work.parts.sort.first.instrument).to eq(horn)
+      last_work = Work.all.sort.last
+      expect(last_work.genre).to eq(symphony_genre)
+      expect(Work.solo.length).to eq(6)
     end
 
     it "raises an error if the file host variable is not set" do
