@@ -3,6 +3,35 @@
     <h4>Free sheet music for Rick Sowash's works</h4>
     <%= render partial: 'preamble' %>
   </div>
+  <div class="row">
+    <span class="col-md-5">
+      <%= form_tag({:controller => "works",
+                    :action => "search"},
+                    :method => "get",
+                    :class => "search-form") do %>
+        <%= hidden_field_tag :scope, @current_scope %>
+        <%= submit_tag "Search My Music", class: "slim-form" %>
+        <%= text_field_tag :search_term, "",
+          class: "search-term-selector slim-form" %>
+      <% end %>
+    </span>
+    <span class="col-md-4">
+      <%= form_tag({:controller => "works",
+                    :action => "index"},
+                    :method => "get",
+                    :class => "scope-form") do %>
+        <%= hidden_field_tag :sort_key, @current_sort_key %>
+        <%= submit_tag "Browse My Music", class: "slim-form" %>
+        <%= select_tag :scope,
+          options_for_select([
+            ['Recorded music only', :recorded],
+            ['All music', :all]
+          ], :recorded),
+          class: "scope-selector slim-form" %>
+      <% end %>
+    </span>
+    <span class="col-md-1"></span>
+  </div>
   <% headers = sorted_column_headers(request.original_url) %>
   <div class="row">
     <div class="col-md-5">
