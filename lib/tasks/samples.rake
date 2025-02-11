@@ -37,5 +37,11 @@ namespace :samples do
       w.add_instruments({ soprano => 1, piano => 1 }) 
       w.save!
     end
+    Work.all.each do |w|
+      if (w.id % 2) == 0
+        w.recording_link = Cicero.words(1) + '.pdf'
+        w.save!
+      end
+    end
   end
 end
