@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post 'sessions/create'
   get 'sessions/destroy'
   get 'sessions/new'
+  get 'works/search', to: 'works#search'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :works

@@ -114,12 +114,26 @@ RSpec.describe WorksController do
   end
 
   context "when displaying multiple works" do
-    it "shows all existing works" do
+    it "filters works based on scope" do
+      # by default, do NOT include works without recordings...
+      Work.all.each do |w|
+        w.update(recording_link: Cicero.words(1) + '.mp3')
+      end
+      test_work = build(:work,
+        genre: Genre.first,
+        recording_link: nil)
+      test_work.add_instruments({ Instrument.first => 1 })
+      test_work.save!
       get works_path
       expect(response.status).to eq(200)
+      expect(response.body).to_not match(/#{test_work.title}/)
+      get works_path, params: { scope: :all }
+      expect(response.status).to eq(200)
+      expect(response.body).to match(/#{test_work.title}/)
     end
 
     it "sorts by genre_id" do
+      Work.all.each { |w| w.update(recording_link: Cicero.words(1) + '.mp3') }
       get works_path({ :sort_key => :genre_id, :order => :ascending })
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:genre_id).first
@@ -129,6 +143,9 @@ RSpec.describe WorksController do
     end
 
     it "sorts by year composed, descending" do
+      Work.all.each do |w|
+        w.update(recording_link: Cicero.words(1) + '.mp3')
+      end
       get works_path({ :sort_key => :composed_in, :order => :descending })
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:composed_in).last
@@ -338,6 +355,40 @@ RSpec.describe WorksController do
       expect(test_work.recording_link.nil?).to be true
       expect(test_work.ascap?).to be true
       ENV["ADMIN_PASSWORD"] = nil
+    end
+  end
+
+  context "when viewing existing works" do
+    it "allows user to search by title" do
+      title_fragment = Work.first.title.split(' ')[1]
+      get works_search_path, params: {
+        search_term: title_fragment
+      }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "remembers the users's scope and sort_key" do
+      scope_xpath = "//form[@class='search-form']"\
+                    "/input[@name='scope']"
+      sort_key_xpath = "//form[@class='scope-form']"\
+                       "/input[@name='sort_key']"
+      get works_path
+      page = Nokogiri::HTML(response.body)
+      scope_input = page.xpath(scope_xpath)
+      expect(scope_input.empty?).to be false
+      expect(scope_input[0]["value"]).to match(/^recorded$/)
+      sort_key_input = page.xpath(sort_key_xpath)
+      expect(sort_key_input.empty?).to be false
+      expect(sort_key_input[0]["value"]).to match(/^composed_in$/)
+      get works_path, params: { sort_key: :genre_id, scope: :all }
+      expect(response).to have_http_status(:success)
+      page = Nokogiri::HTML(response.body)
+      scope_input = page.xpath(scope_xpath)
+      expect(scope_input.empty?).to be false
+      expect(scope_input[0]["value"]).to match(/^all$/)
+      sort_key_input = page.xpath(sort_key_xpath)
+      expect(sort_key_input.empty?).to be false
+      expect(sort_key_input[0]["value"]).to match(/^genre_id$/)
     end
   end
 end

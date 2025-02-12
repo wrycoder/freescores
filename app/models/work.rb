@@ -10,6 +10,12 @@ class Work < ApplicationRecord
   validates :lyricist, presence: true,
         if: Proc.new { |w| !w.genre_id.nil? && w.genre.vocal? }
 
+  scope :recorded, -> { where("recording_link IS NOT NULL") }
+  # The "solo" scope is a little misleading, because it
+  # will also include any work written for a single ensemble...
+  scope :solo, -> { Part.group(:work_id)
+                        .having('count(*) = 1') }
+
   def to_s
     result = title + ' ('
     list_instruments.each_with_index do |member, index|
@@ -46,6 +52,10 @@ class Work < ApplicationRecord
     ensemble.sort { |a,b| a[2] <=> b[2] }
   end
 
+  def <=>(other)
+    parts.sort.first <=> other.parts.sort.first
+  end
+
   def formatted_recording_link(options = {})
     options[:label] ||= "Recording"
     if ENV['MEDIA_HOST'].nil?
@@ -72,6 +82,15 @@ class Work < ApplicationRecord
       ENV['MEDIA_HOST'] + '/' + \
         ENV['FILE_ROOT'] + '/' + score_link
     )
+  end
+
+  def written_for?(instrument_name)
+    parts.each do |p|
+      if !(/#{instrument_name}/ =~ p.instrument.name).nil?
+        return true
+      end
+    end
+    return false
   end
 
   def self.build_from_params(params)

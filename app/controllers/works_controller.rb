@@ -35,20 +35,36 @@ class WorksController < ApplicationController
   end
 
   def index
+    if params[:scope].present? && params[:scope] == "all"
+      @works = Work.all
+      @current_scope = "all"
+    else
+      @works = Work.recorded
+      @current_scope = get_scope
+    end
     if params[:sort_key].present?
+      @current_sort_key = params[:sort_key]
       if params[:order].present?
         trimmed_param = params[:order].sub(/ending/, '')
-        @works = Work.all.order(
+        @works = @works.order(
           {params[:sort_key].to_sym => trimmed_param.to_sym}
         )
       end
     else
-      @works = Work.all.sort { |a,b| a.composed_in <=> b.composed_in }
+      @current_sort_key = get_sort_key
+      @works = @works.sort { |a,b| a.composed_in <=> b.composed_in }
     end
   end
 
   def show
     @work = Work.find(params[:id])
+  end
+
+  def search
+    search_term = params[:search_term]
+    clause = "title = '%#{search_term}%'"
+    @works = Work.where(clause)
+    render "index"
   end
 
   def edit

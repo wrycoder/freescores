@@ -41,7 +41,7 @@ module WorksHelper
       ]
     }
     if !(/sort_key/ =~ url).nil?
-      key_match = /sort_key=(.+)&/.match(url)
+      key_match = /sort_key=([^&]+)&/.match(url)
       if !key_match.nil?
         key = key_match[1]
         if !(/descending/ =~ url).nil?
