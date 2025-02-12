@@ -36,6 +36,7 @@ end
   ["viola", 480, "strings"],
   ["cello", 490, "strings"],
   ["double bass", 500, "strings"],
+  ["guitar", 525, "strings"],
   ["soprano", 10, "vocal"],
   ["mezzo-soprano", 14, "vocal"],
   ["alto", 20, "vocal"],
