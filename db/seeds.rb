@@ -44,7 +44,7 @@ end
   ["bass", 35, "vocal"],
   ["piano", 510, "keyboard"],
   ["harpsichord", 515, "keyboard"],
-  ["woodwind ensemble", 520, "instrumental ensemble"],
+  ["winds", 520, "instrumental ensemble"],
   ["brass quintet", 525, "instrumental ensemble"],
   ["string trio", 550, "instrumental ensemble"],
   ["string ensemble", 555, "instrumental ensemble"],
