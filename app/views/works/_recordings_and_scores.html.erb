@@ -1,0 +1,25 @@
+<% if !recordings.nil? && !recordings.empty? %>
+  <span class="col-md-5">
+    <h4>RECORDINGS</h4>
+    <ul>
+      <% recordings.each do |r| %>
+        <li><%= r[1] %>
+      <% end %>
+    </ul>
+  </span>
+<% else %>
+  <span class="col-md-5"></span>
+<% end %>
+
+<% if !scores.nil? && !scores.empty? %>
+  <span class="col-md-5">
+    <h4>SCORES</h4>
+    <ul>
+      <% scores.each do |s| %>
+        <li><%= s[1] %>
+      <% end %>
+    </ul>
+  </span>
+<% else %>
+  <span class="col-md-5"></span>
+<% end %>
