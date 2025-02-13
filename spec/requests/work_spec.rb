@@ -29,26 +29,7 @@ RSpec.describe WorksController do
 
   before :each do
     build_catalog
-    if !ENV['APP_HOST'].nil?
-      @original_app_host = ENV['APP_HOST']
-    else
-      ENV['APP_HOST'] = 'http://ourserver.com'
-      @original_app_host = nil
-    end
-
-    if !ENV['MEDIA_HOST'].nil?
-      @original_media_host = ENV['MEDIA_HOST']
-    else
-      ENV['MEDIA_HOST'] = 'http://ourserver.com'
-      @original_media_host = nil
-    end
-
-    if !ENV['FILE_ROOT'].nil?
-      @original_file_root = ENV['FILE_ROOT']
-    else
-      ENV['FILE_ROOT'] = 'recordings/mp3'
-      @original_file_root = nil
-    end
+    define_environment
   end
 
   after :each do
@@ -57,9 +38,7 @@ RSpec.describe WorksController do
     expect(Part.count).to eq(0)
     Instrument.destroy_all
     Genre.destroy_all
-    ENV['APP_HOST'] = @original_app_host
-    ENV['MEDIA_HOST'] = @original_media_host
-    ENV['FILE_ROOT'] = @original_file_root
+    clear_environment
   end
 
   context "when displaying a single work" do
@@ -85,6 +64,25 @@ RSpec.describe WorksController do
       get "/works/#{work.id}"
       expect(response.body).to match(/violin, cello, and piano/)
       Genre.destroy_all
+    end
+
+    it "shows links to associated scores" do
+      test_work = Work.first
+      score_1 = test_work.scores.create!(
+        file_name: Cicero.words(1) + ".pdf",
+        label: "Score to #{test_work.title}")
+      score_2 = test_work.scores.create!(
+        file_name: Cicero.words(1) + ".pdf",
+        label: "Score to #{test_work.title}")
+      get work_path(test_work)
+      expect(response).to have_http_status(:success)
+      expect(response.body).to match(/#{score_1.label}/)
+      expect(response.body).to match(/#{score_1.file_name}/)
+      expect(response.body).to match(/#{score_2.label}/)
+      expect(response.body).to match(/#{score_2.file_name}/)
+    end
+
+    it "shows links to associated recordings" do
     end
 
     it "gives a logged-in user access to the liner note" do
@@ -117,11 +115,11 @@ RSpec.describe WorksController do
     it "filters works based on scope" do
       # by default, do NOT include works without recordings...
       Work.all.each do |w|
-        w.update(recording_link: Cicero.words(1) + '.mp3')
+        w.recordings.create!(
+          file_name: Cicero.words(1) + '.mp3',
+          label: "Recording of #{w.title}")
       end
-      test_work = build(:work,
-        genre: Genre.first,
-        recording_link: nil)
+      test_work = build(:work, genre: Genre.first)
       test_work.add_instruments({ Instrument.first => 1 })
       test_work.save!
       get works_path
@@ -133,7 +131,11 @@ RSpec.describe WorksController do
     end
 
     it "sorts by genre_id" do
-      Work.all.each { |w| w.update(recording_link: Cicero.words(1) + '.mp3') }
+      Work.all.each do |w|
+        w.recordings.create!(
+          file_name: Cicero.words(1) + '.mp3',
+          label: "Recording of #{w.title}")
+      end
       get works_path({ :sort_key => :genre_id, :order => :ascending })
       page = Nokogiri::HTML(response.body)
       first_record = Work.order(:genre_id).first
@@ -144,7 +146,9 @@ RSpec.describe WorksController do
 
     it "sorts by year composed, descending" do
       Work.all.each do |w|
-        w.update(recording_link: Cicero.words(1) + '.mp3')
+        w.recordings.create!(
+          file_name: Cicero.words(1) + '.mp3',
+          label: "Recording of #{w.title}")
       end
       get works_path({ :sort_key => :composed_in, :order => :descending })
       page = Nokogiri::HTML(response.body)
@@ -169,7 +173,6 @@ RSpec.describe WorksController do
         work: {
           genre_id: genre.id,
           title: title,
-          score_link: "fancy.pdf",
           composed_in: 1978,
           parts_attributes: {
             "0": { "instrument_id": instrument.id,
@@ -203,7 +206,6 @@ RSpec.describe WorksController do
         work: {
           genre_id: genre.id,
           title: 'Bada Bing',
-          score_link: "bada_bing.pdf",
           composed_in: 1974,
           parts_attributes: {
             "0": { "instrument_id": soprano.id,
@@ -282,7 +284,7 @@ RSpec.describe WorksController do
       expect(response).to have_http_status(:success)
       expect(Work.count).to eq(initial_work_count + 1)
       expect(Part.count).to eq(initial_part_count + 2)
-      expect(Work.last.score_link.nil?).to be true
+      expect(Work.last.scores.any?).to be false
       Work.destroy_all
       expect(Part.count).to eq(0)
       ENV["ADMIN_PASSWORD"] = nil
@@ -314,7 +316,7 @@ RSpec.describe WorksController do
         }
       }
       expect(response).to have_http_status(:success)
-      expect(Work.last.score_link.nil?).to be true
+      expect(Work.last.scores.any?).to be false
       ENV["ADMIN_PASSWORD"] = nil
     end
   end
@@ -337,22 +339,21 @@ RSpec.describe WorksController do
     it "updates a work correctly" do
       test_work = Work.first
       expect(test_work.revised_in.nil?).to be true
-      test_work.update(score_link: nil, recording_link: nil)
+      test_work.recordings.destroy_all
+      test_work.scores.destroy_all
       ENV["ADMIN_PASSWORD"] = 'password'
       log_in_through_controller
       patch work_url({:id => test_work.id}), params: {
         :work => {
           :revised_in => 2013,
-          :ascap => true,
-          :score_link => "",
-          :recording_link => ""
+          :ascap => true
         }
       }
       expect(response).to have_http_status(:success)
       test_work.reload
       expect(test_work.revised_in).to eq(2013)
-      expect(test_work.score_link.nil?).to be true
-      expect(test_work.recording_link.nil?).to be true
+      expect(test_work.scores.any?).to be false
+      expect(test_work.recordings.any?).to be false
       expect(test_work.ascap?).to be true
       ENV["ADMIN_PASSWORD"] = nil
     end
@@ -365,6 +366,7 @@ RSpec.describe WorksController do
         search_term: title_fragment
       }
       expect(response).to have_http_status(:success)
+      expect(response.body).to match(/#{title_fragment}/)
     end
 
     it "remembers the users's scope and sort_key" do
