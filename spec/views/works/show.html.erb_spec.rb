@@ -46,10 +46,20 @@ RSpec.describe "works/show.html.erb", type: :view do
   it "shows links to score and mp3, as well as ascap logo" do
     work = build(:work, genre_id: @genre.id, ascap: true)
     work.add_instruments({ @piano => 1 })
-    work.score_link = work.title.gsub(' ', '_') + ".pdf"
-    work.recording_link = work.title.gsub(' ', '_') + ".mp3"
     work.save!
+    work.scores.create!(
+      file_name: work.title.gsub(' ', '_') + ".pdf",
+      label: "Score for #{work.title}")
+    work.recordings.create!(
+      file_name: work.title.gsub(' ', '_') + ".mp3",
+      label: "Recording of #{work.title}")
+    scores = []
+    recordings = []
+    work.formatted_score_links { |s| scores << s }
+    work.formatted_recording_links { |r| recordings << r }
     assign(:work, work)
+    assign(:scores, scores)
+    assign(:recordings, recordings)
     render
     expect(rendered).to match(/recordings\/mp3\/#{work.title.gsub(' ', '_')}\.pdf/)
     expect(rendered).to match(/recordings\/mp3\/#{work.title.gsub(' ', '_')}\.mp3/)
