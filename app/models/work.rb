@@ -59,32 +59,34 @@ class Work < ApplicationRecord
     parts.sort.first <=> other.parts.sort.first
   end
 
-  def formatted_recording_link(options = {})
-    options[:label] ||= "Recording"
+  def formatted_recording_links(options = {}, &block)
     if ENV['MEDIA_HOST'].nil?
       raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
-    link_to(options[:label],
-      ENV['MEDIA_HOST'] + '/' + \
-        ENV['FILE_ROOT'] + '/' + recording_link
-    )
+    recordings.each do |r|
+      yield [r.id,
+             link_to(r.label,
+                ENV['MEDIA_HOST'] + '/' + \
+                ENV['FILE_ROOT'] + '/' + r.file_name)]
+    end
   end
 
-  def formatted_score_link(options = {})
-    options[:label] ||= "Score"
+  def formatted_score_links(options = {}, &block)
     if ENV['MEDIA_HOST'].nil?
       raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
-    link_to(options[:label],
-      ENV['MEDIA_HOST'] + '/' + \
-        ENV['FILE_ROOT'] + '/' + score_link
-    )
+    scores.each do |s|
+      yield [s.id,
+             link_to(s.label,
+                ENV['MEDIA_HOST'] + '/' + \
+                ENV['FILE_ROOT'] + '/' + s.file_name)]
+      end
   end
 
   def written_for?(instrument_name)
