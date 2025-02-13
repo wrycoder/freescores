@@ -11,28 +11,14 @@ RSpec.describe "works/show.html.erb", type: :view do
                   name: "flute",
                   rank: 500,
                   family: "woodwind")
-
-    if !ENV['MEDIA_HOST'].nil?
-      @original_media_host = ENV['MEDIA_HOST']
-    else
-      ENV['MEDIA_HOST'] = 'http://ourserver.com'
-      @original_media_host = nil
-    end
-
-    if !ENV['FILE_ROOT'].nil?
-      @original_file_root = ENV['FILE_ROOT']
-    else
-      ENV['FILE_ROOT'] = 'recordings/mp3'
-      @original_file_root = nil
-    end
+    define_environment
   end
 
   after :each do
     Work.destroy_all
     Instrument.destroy_all
     Genre.destroy_all
-    ENV['MEDIA_HOST'] = @original_media_host
-    ENV['FILE_ROOT'] = @original_file_root
+    clear_environment
   end
 
   it "shows the instruments and revision" do
