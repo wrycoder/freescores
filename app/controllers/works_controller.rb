@@ -58,12 +58,16 @@ class WorksController < ApplicationController
 
   def show
     @work = Work.find(params[:id])
+    @scores = []
+    @recordings = []
+    @work.formatted_score_links { |s| @scores << s }
+    @work.formatted_recording_links { |r| @recordings << r }
   end
 
   def search
     search_term = params[:search_term]
-    clause = "title = '%#{search_term}%'"
-    @works = Work.where(clause)
+    clause = "title like '%#{search_term}%'"
+    @works = Work.where(clause).distinct
     render "index"
   end
 
