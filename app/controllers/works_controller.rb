@@ -36,10 +36,10 @@ class WorksController < ApplicationController
 
   def index
     if params[:scope].present? && params[:scope] == "all"
-      @works = Work.all
+      @works = Work.all.distinct
       @current_scope = "all"
     else
-      @works = Work.recorded
+      @works = Work.recorded.distinct
       @current_scope = get_scope
     end
     if params[:sort_key].present?
