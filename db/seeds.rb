@@ -52,7 +52,7 @@ end
   ["woodwind quintet", 523, "instrumental ensemble"],
   ["brass quintet", 525, "instrumental ensemble"],
   ["string trio", 550, "instrumental ensemble"],
-  ["string ensemble", 555, "instrumental ensemble"],
+  ["strings", 555, "instrumental ensemble"],
   ["string quartet", 560, "instrumental ensemble"],
   ["chamber orchestra", 570, "instrumental ensemble"],
   ["orchestra", 580, "instrumental ensemble"],
