@@ -7,11 +7,11 @@ namespace :sowash do
     rawdata.each_with_index do |line, index|
       fields = line.split("\t")
       if index == 0 || fields[0] != work.title
-        genre = Genre.find_by_name(fields[2])
+        genre_id = Genre.find_by_name(fields[2]).id
         work = Work.find_or_initialize_by(
           title: fields[0],
           composed_in: fields[1],
-          genre_id: genre.id,
+          genre_id: genre_id,
           ascap: true)
         fields[3].sub!(/^"/, '')
         fields[3].sub!(/"$/, '')
