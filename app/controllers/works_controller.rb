@@ -99,9 +99,9 @@ class WorksController < ApplicationController
 
   private
     def work_params
-      params.require(:work).permit(:title, :genre_id, :score_link,
-                                  :recording_link, :composed_in, :revised_in,
-                                  :lyricist, :ascap, parts_attributes:
+      params.require(:work).permit(:title, :genre_id, :composed_in,
+                                  :revised_in, :lyricist, :ascap,
+                                  parts_attributes:
                                     [:id, :instrument_id, :quantity])
     end
 end
