@@ -8,7 +8,7 @@ namespace :sowash do
       fields = line.split("\t")
       if index == 0 || fields[0] != work.title
         genre = Genre.find_by_name(fields[2])
-        work = Work.build(
+        work = Work.find_or_initialize_by(
           title: fields[0],
           composed_in: fields[1],
           genre_id: genre.id,
@@ -43,7 +43,8 @@ namespace :sowash do
       work = Work.find_by_title(fields[0])
       if !fields[5].nil? 
         if !(/\.mp3/ =~ fields[5]).nil?
-          recording = work.recordings.build(
+          recording = work.recordings
+                      .find_or_initialize_by(
             label: fields[4],
             file_name: fields[5])
           if !recording.valid?
@@ -53,7 +54,8 @@ namespace :sowash do
             recording.save!
           end
         else
-          score = work.scores.build(
+          score = work.scores
+                      .find_or_initialize_by(
             label: fields[4],
             file_name: fields[5])
           if !score.valid?
