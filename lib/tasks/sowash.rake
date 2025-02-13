@@ -41,23 +41,23 @@ namespace :sowash do
     rawdata.each_with_index do |line, index|
       fields = line.split("\t")
       work = Work.find_by_title(fields[0])
-      if !fields[5].nil? 
+      if !fields[5].nil?
         if !(/\.mp3/ =~ fields[5]).nil?
           recording = work.recordings
                       .find_or_initialize_by(
             label: fields[4],
-            file_name: fields[5])
+            file_name: fields[5].sub(/\r\n$/, ''))
           if !recording.valid?
             puts "Unable to add recording"
             puts recording.errors.messages
           else
             recording.save!
           end
-        else
+        elsif !(/\.pdf/ =~ fields[5]).nil?
           score = work.scores
                       .find_or_initialize_by(
             label: fields[4],
-            file_name: fields[5])
+            file_name: fields[5].sub(/\r\n$/, ''))
           if !score.valid?
             puts "Unable to add score"
             puts score.errors.messages
