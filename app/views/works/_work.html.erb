@@ -28,15 +28,8 @@
     <%= @work.genre.vocal? ? "(Text by #{@work.lyricist})" : "" %>
   </span>
 </span>
-<% if !@work.score_link.nil? %>
-  <span class="row w-100 col-md-10 float-end">
-    <span class="col-md-2 text-md-end">A score is available</span>
-    <span class="col-md-8 text-left"><%= @work.formatted_score_link %></span>
-  </span>
-<% end %>
-<% if !@work.recording_link.nil? %>
-  <span class="row w-100 col-md-10 float-end">
-    <span class="col-md-2 text-md-end">A recording is available</span>
-    <span class="col-md-8 text-left"><%= @work.formatted_recording_link %></span>
-  </span>
-<% end %>
+<span class="row w-100 col-md-10 float-end">
+  <%= render partial: 'recordings_and_scores',
+               locals: { scores: @scores,
+               recordings: @recordings } %>
+</span>
