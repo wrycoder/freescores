@@ -1,6 +1,8 @@
 class Work < ApplicationRecord
   include ActionView::Helpers::UrlHelper
   has_many  :parts, dependent: :destroy
+  has_many :scores, dependent: :destroy
+  has_many :recordings, dependent: :destroy
   accepts_nested_attributes_for :parts
   belongs_to :genre
   validates :composed_in, presence: true
