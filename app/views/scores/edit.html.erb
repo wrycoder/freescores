@@ -1,0 +1,30 @@
+<% provide(:title, "Add a score for #{@work.title}") %>
+<span class="row col-md-10">
+  <h4>Add a score for <%= @work.title %></h4>
+</span>
+<% if @score.errors.any? %>
+  <span class="row col-md-10">
+    <% @score.errors.full_messages.each do |msg| %>
+      <ul>
+        <li><%= msg %>
+      </ul>
+    <% end %>
+  </span>
+<% end %>
+<%= form_with model: [@work, @score], class: 'add-associated-file' do |s| %>
+  <span class="row col-md-10">
+    <span class="col-md-5"><h5>Label</h5></span>
+    <span class="col-md-5">
+      <%= s.text_field :label %> 
+    </span>
+  </span>
+  <span class="row col-md-10">
+    <span class="col-md-5"><h5>File Name</h5></span>
+    <span class="col-md-5">
+      <%= s.text_field :file_name %>
+    </span>
+  </span>
+  <span class="row col-md-10">
+    <%= s.submit "Add Score" %>
+  </span>
+<% end %>

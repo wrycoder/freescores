@@ -1,0 +1,30 @@
+<% provide(:title, "Add a recording of #{@work.title}") %>
+<span class="row col-md-10">
+  <h4>Add a recording of <%= @work.title %></h4>
+</span>
+<% if @recording.errors.any? %>
+  <span class="row col-md-10">
+    <% @recording.errors.full_messages.each do |msg| %>
+      <ul>
+        <li><%= msg %>
+      </ul>
+    <% end %>
+  </span>
+<% end %>
+<%= form_with model: [@work, @recording], class: 'add-associated-file' do |r| %>
+  <span class="row col-md-10">
+    <span class="col-md-5"><h5>Label</h5></span>
+    <span class="col-md-5">
+      <%= r.text_field :label %> 
+    </span>
+  </span>
+  <span class="row col-md-10">
+    <span class="col-md-5"><h5>File Name</h5></span>
+    <span class="col-md-5">
+      <%= r.text_field :file_name %>
+    </span>
+  </span>
+  <span class="row col-md-10">
+    <%= r.submit "Add Recording" %>
+  </span>
+<% end %>
