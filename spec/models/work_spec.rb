@@ -42,7 +42,7 @@ RSpec.describe Work, type: :model do
 
     it "does not need a score" do
       genre = create(:genre)
-      work = build(:work, score_link: nil, genre: genre)
+      work = build(:work, genre: genre)
       work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be true
     end
@@ -158,22 +158,18 @@ RSpec.describe Work, type: :model do
       unrecorded_work = build(:work,
         genre: trio_genre,
         title: Cicero.words(5),
-        recording_link: nil,
         composed_in: 1969)
       recorded_work = build(:work,
         genre: trio_genre,
         title: Cicero.words(6),
-        recording_link: 'recorded_trio.mp3',
         composed_in: 2003)
       cello_work = build(:work,
         genre: solo_genre,
         title: Cicero.words(4),
-        recording_link: 'recorded_cello.mp3',
         composed_in: 2011)
       hurdygurdy_work = build(:work,
         genre: solo_genre,
         title: Cicero.words(7),
-        recording_link: nil,
         composed_in: 2018)
       unrecorded_work.add_instruments({
         violin => 1,
