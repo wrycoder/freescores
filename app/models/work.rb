@@ -12,7 +12,8 @@ class Work < ApplicationRecord
   validates :lyricist, presence: true,
         if: Proc.new { |w| !w.genre_id.nil? && w.genre.vocal? }
 
-  scope :recorded, -> { where("recording_link IS NOT NULL") }
+  scope :recorded, -> { Work.joins(:recordings) }
+  scope :scored, -> { Work.joins(:scores) }
   # The "solo" scope is a little misleading, because it
   # will also include any work written for a single ensemble...
   scope :solo, -> { Part.group(:work_id)
