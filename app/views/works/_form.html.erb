@@ -56,22 +56,6 @@
       </span>
     </span>
     <span class="row w-100 col-md-10 bg-dark">
-      <span class="col-md-2">
-        <%= work_form.label :score_link, "PDF Score",
-             class: "fw-bold text-white-50 vertically-center-right-justified" %>
-      </span>
-      <span class="col-md-3">
-        <%= work_form.text_field :score_link, class: "mb-3" %>
-      </span>
-      <span class="col-md-2">
-        <%= work_form.label :recording_link, "Recording",
-             class: "fw-bold text-white-50 vertically-center-right-justified" %>
-      </span>
-      <span class="col-md-3">
-        <%= work_form.text_field :recording_link, class: "mb-3" %>
-      </span>
-    </span>
-    <span class="row w-100 col-md-10 bg-dark">
       <span class="col-md-10 fw-bold text-white-50 align-items-center">Parts</span>
     </span>
       <%= f.fields_for :parts do |builder| %>

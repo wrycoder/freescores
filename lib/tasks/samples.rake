@@ -39,8 +39,11 @@ namespace :samples do
     end
     Work.all.each do |w|
       if (w.id % 2) == 0
-        w.recording_link = Cicero.words(1) + '.pdf'
         w.save!
+        rec_title = Cicero.words(1)
+        rec = w.recordings.create(
+          label: rec_title,
+          file_name: rec_title + '.mp3')
       end
     end
   end

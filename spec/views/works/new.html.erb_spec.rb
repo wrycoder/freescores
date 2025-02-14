@@ -13,7 +13,6 @@ RSpec.describe "works/new.html.erb", type: :view do
                   family: "woodwind")
     render
     expect(rendered).to match(/Title/)
-    expect(rendered).to match(/PDF Score/)
     page = Nokogiri::HTML(rendered)
     expect(page.css('.genre-selector')).to_not be nil
     genre_selector = page.css('.genre-selector')

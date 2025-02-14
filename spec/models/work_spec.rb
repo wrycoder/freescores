@@ -42,7 +42,7 @@ RSpec.describe Work, type: :model do
 
     it "does not need a score" do
       genre = create(:genre)
-      work = build(:work, score_link: nil, genre: genre)
+      work = build(:work, genre: genre)
       work.add_instruments({ @hurdygurdy => 1 })
       expect(work.valid?).to be true
     end
@@ -158,22 +158,18 @@ RSpec.describe Work, type: :model do
       unrecorded_work = build(:work,
         genre: trio_genre,
         title: Cicero.words(5),
-        recording_link: nil,
         composed_in: 1969)
       recorded_work = build(:work,
         genre: trio_genre,
         title: Cicero.words(6),
-        recording_link: 'recorded_trio.mp3',
         composed_in: 2003)
       cello_work = build(:work,
         genre: solo_genre,
         title: Cicero.words(4),
-        recording_link: 'recorded_cello.mp3',
         composed_in: 2011)
       hurdygurdy_work = build(:work,
         genre: solo_genre,
         title: Cicero.words(7),
-        recording_link: nil,
         composed_in: 2018)
       unrecorded_work.add_instruments({
         violin => 1,
@@ -185,15 +181,21 @@ RSpec.describe Work, type: :model do
         cello => 1,
         piano => 1})
       recorded_work.save!
+      rec = recorded_work.recordings.build
+      rec.file_name = Cicero.words(1) + '.mp3'
+      rec.label = Cicero.words(4)
+      rec.save!
       cello_work.add_instruments({ cello => 1 })
       cello_work.save!
+      cello_work.recordings.create!(
+        label: cello_work.title,
+        file_name: Cicero.words(1) + '.mp3')
       hurdygurdy_work.add_instruments({ @hurdygurdy => 1 })
       hurdygurdy_work.save!
       expect(Work.all.count).to eq(4)
+      expect(Work.recorded.length).to eq(2)
       expect(Work.recorded.count).to eq(2)
-      expect(Work.recorded
-            .order(:composed_in)
-            .last.id).to eq(cello_work.id)
+      expect(Work.recorded.first.id).to eq(recorded_work.id)
       sorted_parts = unrecorded_work.parts
           .sort { |a,b| a.instrument_rank <=> b.instrument_rank }
       expect(sorted_parts.first.instrument.name).to match(/violin/)
@@ -269,8 +271,8 @@ RSpec.describe Work, type: :model do
         ENV['FILE_ROOT'] = 'recordings/mp3'
       end
       genre = create(:genre)
-      sonata = build(:work, genre_id: genre.id, recording_link: 'sonata.mp3')
-      expect { sonata.formatted_recording_link }.to raise_error(RuntimeError)
+      sonata = build(:work, genre_id: genre.id)
+      expect { sonata.formatted_recording_links }.to raise_error(RuntimeError)
       Genre.destroy_all
       ENV['FILE_ROOT'] = original_file_root
     end
@@ -283,13 +285,13 @@ RSpec.describe Work, type: :model do
         ENV['FILE_HOST'] = 'ourserver.com'
       end
       genre = build(:genre)
-      concerto = build(:work, genre_id: genre.id, recording_link: 'foobar.mp3')
-      expect { concerto.formatted_recording_link }.to raise_error(RuntimeError)
+      concerto = build(:work, genre_id: genre.id)
+      expect { concerto.formatted_recording_links }.to raise_error(RuntimeError)
       Genre.destroy_all
       ENV['FILE_HOST'] = original_file_host
     end
 
-    it "correctly formats the link to the score" do
+    it "correctly formats the links to the score" do
       if !ENV['FILE_ROOT'].nil?
         original_file_root = ENV['FILE_ROOT']
       else
@@ -303,8 +305,15 @@ RSpec.describe Work, type: :model do
         ENV['MEDIA_HOST'] = 'http://ourserver.com'
       end
       genre = create(:genre)
-      suite = build(:work, genre_id: genre.id, score_link: 'foobar.pdf')
-      expect(suite.formatted_score_link).to match(/foobar\.pdf/)
+      suite = build(:work, genre_id: genre.id)
+      suite.add_instruments({@hurdygurdy => 1 })
+      suite.save!
+      suite.scores.create!(
+        file_name: "foobar.pdf",
+        label: "Score for #{suite.title}")
+      suite.formatted_score_links do |arr|
+        expect(arr[1]).to match(/foobar\.pdf/)
+      end
       Genre.destroy_all
       ENV['FILE_ROOT'] = original_file_root
       ENV['MEDIA_HOST'] = original_media_host

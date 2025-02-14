@@ -36,10 +36,10 @@ class WorksController < ApplicationController
 
   def index
     if params[:scope].present? && params[:scope] == "all"
-      @works = Work.all
+      @works = Work.all.distinct
       @current_scope = "all"
     else
-      @works = Work.recorded
+      @works = Work.recorded.distinct
       @current_scope = get_scope
     end
     if params[:sort_key].present?
@@ -58,12 +58,16 @@ class WorksController < ApplicationController
 
   def show
     @work = Work.find(params[:id])
+    @scores = []
+    @recordings = []
+    @work.formatted_score_links { |s| @scores << s }
+    @work.formatted_recording_links { |r| @recordings << r }
   end
 
   def search
     search_term = params[:search_term]
-    clause = "title = '%#{search_term}%'"
-    @works = Work.where(clause)
+    clause = "title like '%#{search_term}%'"
+    @works = Work.where(clause).distinct
     render "index"
   end
 
@@ -95,9 +99,9 @@ class WorksController < ApplicationController
 
   private
     def work_params
-      params.require(:work).permit(:title, :genre_id, :score_link,
-                                  :recording_link, :composed_in, :revised_in,
-                                  :lyricist, :ascap, parts_attributes:
+      params.require(:work).permit(:title, :genre_id, :composed_in,
+                                  :revised_in, :lyricist, :ascap,
+                                  parts_attributes:
                                     [:id, :instrument_id, :quantity])
     end
 end

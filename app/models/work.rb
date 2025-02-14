@@ -1,6 +1,8 @@
 class Work < ApplicationRecord
   include ActionView::Helpers::UrlHelper
   has_many  :parts, dependent: :destroy
+  has_many :scores, dependent: :destroy
+  has_many :recordings, dependent: :destroy
   accepts_nested_attributes_for :parts
   belongs_to :genre
   validates :composed_in, presence: true
@@ -10,7 +12,8 @@ class Work < ApplicationRecord
   validates :lyricist, presence: true,
         if: Proc.new { |w| !w.genre_id.nil? && w.genre.vocal? }
 
-  scope :recorded, -> { where("recording_link IS NOT NULL") }
+  scope :recorded, -> { Work.joins(:recordings) }
+  scope :scored, -> { Work.joins(:scores) }
   # The "solo" scope is a little misleading, because it
   # will also include any work written for a single ensemble...
   scope :solo, -> { Part.group(:work_id)
@@ -56,32 +59,34 @@ class Work < ApplicationRecord
     parts.sort.first <=> other.parts.sort.first
   end
 
-  def formatted_recording_link(options = {})
-    options[:label] ||= "Recording"
+  def formatted_recording_links(options = {}, &block)
     if ENV['MEDIA_HOST'].nil?
       raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
-    link_to(options[:label],
-      ENV['MEDIA_HOST'] + '/' + \
-        ENV['FILE_ROOT'] + '/' + recording_link
-    )
+    recordings.each do |r|
+      yield [r.id,
+             link_to(r.label,
+                ENV['MEDIA_HOST'] + '/' + \
+                ENV['FILE_ROOT'] + '/' + r.file_name)]
+    end
   end
 
-  def formatted_score_link(options = {})
-    options[:label] ||= "Score"
+  def formatted_score_links(options = {}, &block)
     if ENV['MEDIA_HOST'].nil?
       raise RuntimeError.new("System misconfigured: no MEDIA_HOST defined")
     end
     if ENV['FILE_ROOT'].nil?
       raise RuntimeError.new("System misconfigured: no FILE_ROOT defined")
     end
-    link_to(options[:label],
-      ENV['MEDIA_HOST'] + '/' + \
-        ENV['FILE_ROOT'] + '/' + score_link
-    )
+    scores.each do |s|
+      yield [s.id,
+             link_to(s.label,
+                ENV['MEDIA_HOST'] + '/' + \
+                ENV['FILE_ROOT'] + '/' + s.file_name)]
+      end
   end
 
   def written_for?(instrument_name)
@@ -94,17 +99,9 @@ class Work < ApplicationRecord
   end
 
   def self.build_from_params(params)
-    if params.has_key?("score_link") && params["score_link"].empty?
-      params["score_link"] = nil
-    end
-    if params.has_key?("recording_link") && params["recording_link"].empty?
-      params["recording_link"] = nil
-    end
     work = Work.new(
       title: params["title"],
       genre_id: params["genre_id"],
-      score_link: params["score_link"],
-      recording_link: params["recording_link"],
       composed_in: params["composed_in"])
     if params.has_key?("revised_in")
       work.revised_in = params["revised_in"]
