@@ -33,3 +33,21 @@
                locals: { scores: @scores,
                recordings: @recordings } %>
 </span>
+<% if logged_in? %>
+  <span class="row w-100 col-md-10">
+    <span class="col-md-5">
+      <%= form_with model: @work,
+          url: new_work_recording_path(@work),
+          method: "get" do |f| %>
+        <%= f.submit "Add Recording" %>
+      <% end %>
+    </span>
+    <span class="col-md-5">
+      <%= form_with model: @work,
+          url: new_work_score_path(@work),
+          method: "get" do |f| %>
+       <%= f.submit "Add Score" %>
+     <% end %>
+    </span>
+  </span>
+<% end %>

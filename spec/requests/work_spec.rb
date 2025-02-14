@@ -43,26 +43,9 @@ RSpec.describe WorksController do
 
   context "when displaying a single work" do
     it "shows a properly-formatted list of instruments" do
-      Work.destroy_all
-      Instrument.destroy_all
-      violin = create(:instrument,
-              name: "violin",
-              family: "strings",
-              rank: 750)
-      cello = create(:instrument,
-              name: "cello",
-              family: "strings",
-              rank: 775)
-      piano = create(:instrument,
-              name: "piano",
-              family: "keyboard",
-              rank: 800)
-      genre = create(:genre, name: "Piano Trio")
-      work = build(:work, genre_id: genre.id)
-      work.add_instruments({violin => 1, cello => 1, piano => 1})
-      work.save!
+      work = Work.first
       get "/works/#{work.id}"
-      expect(response.body).to match(/violin, cello, and piano/)
+      expect(response.body).to match(/#{work.list_instruments}/)
       Genre.destroy_all
     end
 
@@ -80,9 +63,6 @@ RSpec.describe WorksController do
       expect(response.body).to match(/#{score_1.file_name}/)
       expect(response.body).to match(/#{score_2.label}/)
       expect(response.body).to match(/#{score_2.file_name}/)
-    end
-
-    it "shows links to associated recordings" do
     end
 
     it "gives a logged-in user access to the liner note" do
@@ -107,6 +87,28 @@ RSpec.describe WorksController do
       Work.destroy_all
       Instrument.destroy_all
       Genre.destroy_all
+      ENV['ADMIN_PASSWORD'] = nil
+    end
+
+    it "enables a logged-in user to add a recording" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      work = Work.first
+      get work_path(work)
+      expect(response.body).to_not match(/Add Recording/)
+      log_in_through_controller
+      get work_path(work)
+      expect(response.body).to match(/Add Recording/)
+      ENV['ADMIN_PASSWORD'] = nil
+    end
+
+    it "enables a logged-in user to add a score" do
+      ENV["ADMIN_PASSWORD"] = 'password'
+      work = Work.first
+      get work_path(work)
+      expect(response.body).to_not match(/Add Score/)
+      log_in_through_controller
+      get work_path(work)
+      expect(response.body).to match(/Add Score/)
       ENV['ADMIN_PASSWORD'] = nil
     end
   end
