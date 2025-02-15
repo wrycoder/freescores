@@ -53,7 +53,7 @@ describe WorksHelper, type: :helper do
     expect(result[:title][0]).to_not match(/[⬇️,⬆️]/)
     current_url = 'https://sowash.com/works'
     result = sorted_column_headers(current_url)
-    expect(result[:composed_in][0]).to match(/Composed⬆️/)
+    expect(result[:composed_in][0]).to match(/Year⬆️/)
     expect(result[:title][0]).to_not match(/[⬇️,⬆️]/)
     expect(result[:genre_id][0]).to_not match(/[⬇️,⬆️]/)
     ENV['FILE_HOST'] = @original_file_host
