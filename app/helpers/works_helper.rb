@@ -34,7 +34,7 @@ module WorksHelper
         "Title", "sort_key=title", "order=ascending"
       ],
       :composed_in => [
-        "Composed⬆️", "sort_key=composed_in", "order=ascending"
+        "Year⬆️", "sort_key=composed_in", "order=descending"
       ],
       :genre_id => [
         "Instrumentation", "sort_key=genre_id", "order=ascending"
