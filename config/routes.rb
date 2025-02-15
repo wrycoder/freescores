@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'sessions/destroy'
   get 'sessions/new'
   get 'works/search', to: 'works#search'
+  get 'works/vocal', to: 'works#vocal'
+  get 'works/instrumental', to: 'works#instrumental'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :instruments, only: [:new, :create, :show,
