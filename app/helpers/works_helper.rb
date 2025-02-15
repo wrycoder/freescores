@@ -54,14 +54,14 @@ module WorksHelper
         if key == "genre_id"
           headers[key.to_sym][0] = "Instrumentation" + arrow
           headers[:title][0] = "Title"
-          headers[:composed_in][0] = "Composed"
+          headers[:composed_in][0] = "Year"
         elsif key == "composed_in"
-          headers[key.to_sym][0] = "Composed" + arrow
+          headers[key.to_sym][0] = "Year" + arrow
           headers[:genre_id][0] = "Instrumentation"
           headers[:title][0] = "Title"
         else
           headers[key.to_sym][0] = "Title" + arrow
-          headers[:composed_in][0] = "Composed"
+          headers[:composed_in][0] = "Year"
           headers[:genre_id][0] = "Instrumentation"
         end
         headers[key.to_sym][2] = "order=" + other_order
