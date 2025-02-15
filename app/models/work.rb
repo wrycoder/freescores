@@ -14,6 +14,8 @@ class Work < ApplicationRecord
 
   scope :recorded, -> { Work.joins(:recordings) }
   scope :scored, -> { Work.joins(:scores) }
+  scope :vocal, -> { Work.joins(:genre).where("vocal = true") }
+  scope :instrumental, -> { Work.joins(:genre).where("vocal = false") }
   # The "solo" scope is a little misleading, because it
   # will also include any work written for a single ensemble...
   scope :solo, -> { Part.group(:work_id)
