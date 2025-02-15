@@ -1,25 +1,26 @@
-As Surely As the Sunset	1977		H.D. Thoreau	(one movement)	surely.sunset.mp3	Art Song
-The Days of Our Glory	1977		Lord Byron	(one movement)	days_glory.mp3	Art Song
-Prairie Prayer	1996		Katherine Bryson	(one movement)	prairie_prayer.mp3	Art Song
-Diana’s Songs	1999		Annie Finch	(one movement)	diane.mp3	Art Song
-Three Love Songs	1998		Sara Teasdale	I. Love Me	love_me_from_3_love_songs.mp3	Song Cycle
-Three Love Songs	1998		Sara Teasdale	II. Unrequited Love	lovesongs.mp3	Song Cycle
-Three Love Songs	1998		Sara Teasdale	III. Love at the End	lovesongs.mp3	Song Cycle
-Along the River	1998	2007	James Joyce	(one movement)	along_river.mp3	Song Cycle
-I was remembering this morning	1975		Thornton Wilder	(one movement)	remembering.mp3	Art Song
-The Planting of the Apple Tree	1985		W.C. Bryant	(one movement)	apple_tree.mp3	Art Song
-The Flower-fed Buffaloes	1975		Vachel Lindsay	(one movement)	flowerfed_buffalo.mp3	Art Song
-The Town Beyond the Mountain	1985		Odell Shepard	(one movement)	town_beyond.mp3	Art Song
-Silvery Songs I. The Shepherd	1999		Walter de la Mare	(one movement)	shepherd.mp3	Art Song
-Silvery Songs II. Silver	1999		Walter de la Mare	(one movement)	silver.mp3	Art Song
-Silvery Songs III. The Snowflake	1999		Walter de la Mare	(one movement)	snowflake.mp3	Art Song
-Silvery Songs IV. Wanderers	1999		Walter de la Mare	(one movement)	wanderers.mp3	Art Song
-Silvery Songs V. Rain	1999		Walter de la Mare	(one movement)	silvery.rain.mp3	Art Song
-Teasdale Songs I. A June Day	1998		Sara Teasdale	(one movement)	june.day.mp3	Art Song
-Teasdale Songs II.Love Me	1999		Walter de la Mare	(one movement)	love_me_from_3_love_songs.mp3	Art Song
-Teasdale Songs III. The Tune	1999		Walter de la Mare	(one movement)	teasdale_tune.mp3	Art Song
-Teasdale Songs IV. Night Song at Amalfi	1999		Walter de la Mare	(one movement)	lovesongs.mp3	Art Song
-Teasdale Songs V. The Net	1999	 	Walter de la Mare	(one movement)	net.mp3	Art Song
-Teasdale Songs VI. The Sea Lover	1999		Walter de la Mare	(one movement)	sea.lover.mp3	Art Song
-Teasdale Songs VII. Let it Be You	1999		Walter de la Mare	(one movement)	lovesongs.mp3	Art Song
-Bright April	1980		Sara Teasdale	(one movement)	bright_april.mp3	Song Cycle
+title	composed_in	revised_in	lyricist	label	file_name	genre	forces
+As Surely As the Sunset	1977		H.D. Thoreau	(one movement)	surely.sunset.mp3	Art Song	baritone,piano
+The Days of Our Glory	1977		Lord Byron	(one movement)	days_glory.mp3	Art Song	baritone,piano
+Prairie Prayer	1996		Katherine Bryson	(one movement)	prairie_prayer.mp3	Art Song	baritone,piano
+Diana’s Songs	1999		Annie Finch	(one movement)	diane.mp3	Art Song	soprano,piano
+Three Love Songs	1998		Sara Teasdale	I. Love Me	love_me_from_3_love_songs.mp3	Song Cycle	mezzo-soprano,piano
+Three Love Songs	1998		Sara Teasdale	II. Unrequited Love	lovesongs.mp3	Song Cycle	mezzo-soprano,piano
+Three Love Songs	1998		Sara Teasdale	III. Love at the End	lovesongs.mp3	Song Cycle	mezzo-soprano,piano
+Along the River	1998	2007	James Joyce	(one movement)	along_river.mp3	Song Cycle	mezzo-soprano,flute,clarinet,piano
+I was remembering this morning	1975		Thornton Wilder	(one movement)	remembering.mp3	Art Song	alto,piano
+The Planting of the Apple Tree	1985		W.C. Bryant	(one movement)	apple_tree.mp3	Art Song	baritone,piano
+The Flower-fed Buffaloes	1975		Vachel Lindsay	(one movement)	flowerfed_buffalo.mp3	Art Song	baritone
+The Town Beyond the Mountain	1985		Odell Shepard	(one movement)	town_beyond.mp3	Art Song	soprano,piano
+Silvery Songs I. The Shepherd	1999		Walter de la Mare	(one movement)	shepherd.mp3	Art Song	mezzo-soprano,flute,piano
+Silvery Songs II. Silver	1999		Walter de la Mare	(one movement)	silver.mp3	Art Song	mezzo-soprano,flute,piano
+Silvery Songs III. The Snowflake	1999		Walter de la Mare	(one movement)	snowflake.mp3	Art Song	mezzo-soprano,flute,piano
+Silvery Songs IV. Wanderers	1999		Walter de la Mare	(one movement)	wanderers.mp3	Art Song	mezzo-soprano,flute,piano
+Silvery Songs V. Rain	1999		Walter de la Mare	(one movement)	silvery.rain.mp3	Art Song	mezzo-soprano,flute,piano
+Teasdale Songs I. A June Day	1998		Sara Teasdale	(one movement)	june.day.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs II.Love Me	1999		Walter de la Mare	(one movement)	love_me_from_3_love_songs.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs III. The Tune	1999		Walter de la Mare	(one movement)	teasdale_tune.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs IV. Night Song at Amalfi	1999		Walter de la Mare	(one movement)	lovesongs.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs V. The Net	1999	 	Walter de la Mare	(one movement)	net.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs VI. The Sea Lover	1999		Walter de la Mare	(one movement)	sea.lover.mp3	Art Song	mezzo-soprano,piano
+Teasdale Songs VII. Let it Be You	1999		Walter de la Mare	(one movement)	lovesongs.mp3	Art Song	mezzo-soprano,piano
+Bright April	1980		Sara Teasdale	(one movement)	bright_april.mp3	Song Cycle	soprano,cello
