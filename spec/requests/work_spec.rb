@@ -394,5 +394,23 @@ RSpec.describe WorksController do
       expect(sort_key_input.empty?).to be false
       expect(sort_key_input[0]["value"]).to match(/^genre_id$/)
     end
+
+    it "allows user to see only vocal or instrumental works" do
+      vocal_genre = create(:genre, name: "Song Cycle", vocal: true)
+      singer = create(:instrument, name: "soprano", rank: 10)
+      piano = Instrument.find_by_name("piano")
+      song_cycle = build(:work, genre: vocal_genre, lyricist: "Stuart Smalley")
+      song_cycle.add_instruments({ singer => 1, piano => 1})
+      song_cycle.save!
+      inst_genre = Genre.find_by_name("Miscellaneous Chamber Music")
+      instrumental_work = inst_genre.works.first
+      get works_vocal_path
+      expect(response).to have_http_status(:success)
+      expect(response.body).to match(/#{song_cycle.title}/)
+      expect(response.body).to_not match(/#{instrumental_work.title}/)
+      get works_instrumental_path
+      expect(response).to have_http_status(:success)
+      expect(response.body).to_not match(/#{song_cycle.title}/)
+    end
   end
 end
