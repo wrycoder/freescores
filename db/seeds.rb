@@ -16,7 +16,14 @@
  ["Miscellaneous Orchestral",false],
  ["Concerto", false],
  ["Sonata",false],
- ["Part Song",true],
+ ["Choral Song",true],
+ ["Choral Story",true],
+ ["Art Song",true],
+ ["Song Cycle",true],
+ ["Choral Song Cycle",true],
+ ["Cantata",true],
+ ["Anthem",true],
+ ["Motet",true],
  ["Hymn",true]].each do |name, vocal|
   Genre.find_or_create_by!(name: name, vocal: vocal)
 end
