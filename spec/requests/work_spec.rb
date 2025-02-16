@@ -408,9 +408,17 @@ RSpec.describe WorksController do
       expect(response).to have_http_status(:success)
       expect(response.body).to match(/#{song_cycle.title}/)
       expect(response.body).to_not match(/#{instrumental_work.title}/)
+      page = Nokogiri::HTML(response.body)
+      title_link = page.xpath("//a[@class='sort-by-title-link']")
+      expect(title_link[0].attribute_nodes[2].value)
+        .to match(/#{url_for(works_vocal_path)}/)
       get works_instrumental_path
       expect(response).to have_http_status(:success)
       expect(response.body).to_not match(/#{song_cycle.title}/)
+      page = Nokogiri::HTML(response.body)
+      genre_link = page.xpath("//a[@class='sort-by-genre-link']")
+      expect(genre_link[0].attribute_nodes[2].value)
+        .to match(/#{url_for(works_instrumental_path)}/)
     end
   end
 end
