@@ -372,27 +372,42 @@ RSpec.describe WorksController do
     end
 
     it "remembers the users's scope and sort_key" do
-      scope_xpath = "//form[@class='search-form']"\
-                    "/input[@name='scope']"
-      sort_key_xpath = "//form[@class='scope-form']"\
-                       "/input[@name='sort_key']"
+      search_form_xpath = "//form[@class='search-form']"
+      scope_form_xpath = "//form[@class='scope-form']"
       get works_path
       page = Nokogiri::HTML(response.body)
-      scope_input = page.xpath(scope_xpath)
-      expect(scope_input.empty?).to be false
-      expect(scope_input[0]["value"]).to match(/^recorded$/)
-      sort_key_input = page.xpath(sort_key_xpath)
-      expect(sort_key_input.empty?).to be false
-      expect(sort_key_input[0]["value"]).to match(/^composed_in$/)
+      scope_form = page.xpath(scope_form_xpath)
+      expect(scope_form[0].attribute_nodes[0].value)
+        .to match(/sort_key/)
+      expect(scope_form[0].attribute_nodes[0].value)
+        .to match(/composed_in/)
+      scope_form.xpath("//select")[0].children.each do |input|
+        if input.attribute_nodes.size == 2
+          # Assume that the first node is the "selected" attribute
+          expect(input.attribute_nodes[1].value).to match(/recorded/)
+        end
+      end
+      search_form = page.xpath(search_form_xpath)
+      expect(search_form.empty?).to be false
+      expect(search_form[0].attribute_nodes[0].value)
+        .to match(/scope/)
+      expect(search_form[0].attribute_nodes[0].value)
+        .to match(/recorded/)
       get works_path, params: { sort_key: :genre_id, scope: :all }
       expect(response).to have_http_status(:success)
       page = Nokogiri::HTML(response.body)
-      scope_input = page.xpath(scope_xpath)
-      expect(scope_input.empty?).to be false
-      expect(scope_input[0]["value"]).to match(/^all$/)
-      sort_key_input = page.xpath(sort_key_xpath)
-      expect(sort_key_input.empty?).to be false
-      expect(sort_key_input[0]["value"]).to match(/^genre_id$/)
+      scope_form = page.xpath(scope_form_xpath)
+      expect(scope_form.empty?).to be false
+      expect(scope_form[0].attribute_nodes[0].value)
+        .to match(/sort_key/)
+      expect(scope_form[0].attribute_nodes[0].value)
+        .to match(/genre_id/)
+      scope_form.xpath("//select")[0].children.each do |input|
+        if input.attribute_nodes.size == 2
+          # Assume that the first node is the "selected" attribute
+          expect(input.attribute_nodes[1].value).to match(/all/)
+        end
+      end
     end
 
     it "allows user to see only vocal or instrumental works" do
