@@ -42,12 +42,16 @@ class WorksController < ApplicationController
   def vocal
     @works = Work.vocal.distinct
     @current_scope = get_scope
+    @path = works_vocal_path
+    set_sorting_options
     render "index"
   end
 
   def instrumental
     @works = Work.instrumental.distinct
     @current_scope = get_scope
+    @path = works_instrumental_path
+    set_sorting_options
     render "index"
   end
 
