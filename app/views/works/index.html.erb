@@ -8,8 +8,8 @@
       <%= form_tag({:controller => "works",
                     :action => "search"},
                     :method => "get",
+                    :params => { :scope => @current_scope },
                     :class => "search-form") do %>
-        <%= hidden_field_tag :scope, @current_scope %>
         <%= submit_tag "Search My Music", class: "slim-form" %>
         <%= text_field_tag :search_term, "",
           class: "search-term-selector slim-form" %>
@@ -19,8 +19,8 @@
       <%= form_tag({:controller => "works",
                     :action => "index"},
                     :method => "get",
+                    :params => { :sort_key => @current_sort_key },
                     :class => "scope-form") do %>
-        <%= hidden_field_tag :sort_key, @current_sort_key %>
         <%= submit_tag "Browse My Music", class: "slim-form" %>
         <%= select_tag :scope,
           options_for_select([
