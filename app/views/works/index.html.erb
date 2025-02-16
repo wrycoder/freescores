@@ -35,18 +35,22 @@
   <div class="row">
     <div class="col-md-6">
       <h6 class="text-uppercase fw-bold">
-        <%= link_to headers[:title][0], header_link(headers[:title]),
-              title: "Click here to sort by title" %></h6>
+        <%= link_to headers[:title][0],
+              header_link(headers[:title], {:path => @path}),
+              title: "Click here to sort by title",
+              class: "sort-by-title-link" %></h6>
     </div>
     <div class="col-md-1 text-center">
       <h6 class="text-uppercase fw-bold"><%= link_to headers[:composed_in][0],
-              header_link(headers[:composed_in]),
-              title: "Click here to sort by year of composition" %></h6>
+              header_link(headers[:composed_in], {:path => @path}),
+              title: "Click here to sort by year of composition",
+              class: "sort-by-year-link" %></h6>
     </div>
     <div class="col-md-3">
       <h6 class="text-uppercase fw-bold"><%= link_to headers[:genre_id][0],
-              header_link(headers[:genre_id]),
-              title: "Click here to sort by instrumentation" %></h6>
+              header_link(headers[:genre_id], {:path => @path}),
+              title: "Click here to sort by instrumentation",
+              class: "sort-by-genre-link" %></h6>
     </div>
   </div>
   <% @works.each_with_index do |work, index| %>
