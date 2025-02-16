@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :instruments, only: [:new, :create, :show,
                                  :index, :edit, :update]
-  resources :genres, only: [:new, :create, :index, :update]
+  resources :genres, only: [:new, :create, :index, :show, :update]
   resources :liner_notes, only: [:new, :create, :edit, :update, :show]
   resources :recordings, only: [:new, :create, :destroy]
   resources :scores, only: [:new, :create, :destroy]
