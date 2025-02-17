@@ -1,30 +1,37 @@
-namespace :sowash do
-
+namespace :composer do
+  column_defs = {
+    :title          => -1,
+    :composed_in    => -1,
+    :revised_in     => -1,
+    :lyricist       => -1,
+    :label          => -1,
+    :file_name      => -1,
+    :genre          => -1,
+    :forces         => -1
+  }
   current_line = nil
-  file_label_index = nil
-  file_name_index = nil
 
   desc "Handle MP3 and PDF files for a given work"
   task :process_files => :environment do |task, args|
     fields = current_line.split("\t")
-    work = Work.find_by_title(fields[0])
-    if !fields[file_name_index].nil?
-      if !(/\.mp3/ =~ fields[file_name_index]).nil?
+    work = Work.find_by_title(fields[column_defs[:title]])
+    if !fields[column_defs[:file_name]].nil?
+      if !(/\.mp3/ =~ fields[column_defs[:file_name]]).nil?
         recording = work.recordings
                     .find_or_initialize_by(
-          label: fields[file_label_index],
-          file_name: fields[file_name_index].sub(/\r\n$/, ''))
+          label: fields[column_defs[:label]],
+          file_name: fields[column_defs[:file_name]].sub(/\r\n$/, ''))
         if !recording.valid?
           puts "Unable to add recording"
           puts recording.errors.messages
         else
           recording.save!
         end
-      elsif !(/\.pdf/ =~ fields[file_name_index]).nil?
+      elsif !(/\.pdf/ =~ fields[column_defs[:file_name]]).nil?
         score = work.scores
-                    .find_or_initialize_by(
-          label: fields[file_label_index],
-          file_name: fields[file_name_index].sub(/\r\n$/, ''))
+                  .find_or_initialize_by(
+          label: fields[column_defs[:label]],
+          file_name: fields[column_defs[:file_name]].sub(/\r\n$/, ''))
         if !score.valid?
           puts "Unable to add score"
           puts score.errors.messages
@@ -32,82 +39,43 @@ namespace :sowash do
           score.save!
         end
       end
-    end # !fields[5].nil?
+    end
   end
 
-  desc "Import TSV data for instrumental works"
-  task :load_instrumental, [:filename] =>:environment do |task, args|
-    puts "Loading instrumental works from #{args[:filename]}"
+  desc "Import data from a tab-separated txt file"
+  task :load, [:filename] => :environment do |task, args|
+    puts "Reading header in #{args[:filename]}"
     rawdata = IO.readlines(args[:filename])
     work = nil
-    rawdata.each_with_index do |line, index|
-      if index == 0
-        next # Skip labels on first line
-      end
-      fields = line.split("\t")
-      if index == 1 || fields[0] != work.title
-        genre_id = Genre.find_by_name(fields[2]).id
-        work = Work.find_or_initialize_by(
-          title: fields[0],
-          composed_in: fields[1],
-          genre_id: genre_id,
-          ascap: true)
-        fields[3].sub!(/^"/, '')
-        fields[3].sub!(/"$/, '')
-        forces = fields[3].split(",")
-        forces.map {|s| s.strip!}
-        instruments = {}
-        forces.each do |f|
-          instMatch = /([0-9]+ )*([a-zA-Z]+[ a-zA-Z]*)/.match(f)
-          if !instMatch[1].nil?
-            inst = Instrument.find_by_name(instMatch[2].singularize)
-            instruments[inst] = instMatch[1].to_i
-          else
-            inst = Instrument.find_by_name(instMatch[2])
-            instruments[inst] = 1
+    # MAIN LOOP
+    rawdata.each_with_index do |line, line_index|
+      if line_index == 0
+        headers = line.split("\t")
+        headers.each_with_index do |header, key_index|
+          column_defs.keys.each do |key|
+            if header.strip.to_sym == key
+              column_defs[key] = key_index
+            end
           end
         end
-        work.add_instruments(instruments)
-        if !work.valid?
-          puts "Error on this record: #{fields.join(", ")}"
-          puts work.errors.messages
-          exit
-        end
-        work.save!
+        next
       end
-    end
-    file_label_index = 4
-    file_name_index = 5
-    rawdata.each_with_index do |line, index|
-      current_line = line
-      Rake::Task["sowash:process_files"].invoke
-      Rake::Task["sowash:process_files"].reenable
-    end
-  end
-
-  task :load_vocal, [:filename] =>:environment do |task, args|
-    puts "Loading vocal works from #{args[:filename]}"
-    rawdata = IO.readlines(args[:filename])
-    work = nil
-    rawdata.each_with_index do |line, index|
-      if index == 0
-        next # Skip labels on first line
+      column_defs.keys.each_with_index do |cdefkey, ci|
+        if column_defs[cdefkey] < 0
+          raise "Column definition missing for #{cdefkey}"
+        end
       end
       fields = line.split("\t")
-      if index == 1 || fields[0] != work.title
-        genre_id = Genre.find_by_name(fields[6]).id
+      if line_index == 1 || fields[column_defs[:title]] != work.title
+        genre_id = Genre.find_by_name(fields[column_defs[:genre]]).id
         work = Work.find_or_initialize_by(
-          title: fields[0],
-          composed_in: fields[1],
+          title: fields[column_defs[:title]],
+          composed_in: fields[column_defs[:composed_in]],
           genre_id: genre_id,
-          lyricist: fields[3],
           ascap: true)
-        if !fields[2].empty?
-          work.revised_in = fields[2].to_i
-        end
-        fields[7].sub!(/^"/, '')
-        fields[7].sub!(/"$/, '')
-        forces = fields[7].split(",")
+        fields[column_defs[:forces]].sub!(/^"/, '')
+        fields[column_defs[:forces]].sub!(/"$/, '')
+        forces = fields[column_defs[:forces]].split(",")
         forces.map {|s| s.strip!}
         instruments = {}
         forces.each do |f|
@@ -121,6 +89,9 @@ namespace :sowash do
           end
         end
         work.add_instruments(instruments)
+        if work.genre.vocal?
+          work.lyricist = fields[column_defs[:lyricist]]
+        end
         if !work.valid?
           puts "Error on this record: #{fields.join(", ")}"
           puts work.errors.messages
@@ -128,13 +99,11 @@ namespace :sowash do
         end
         work.save!
       end
-    end
-    file_label_index = 4
-    file_name_index = 5
+    end # END MAIN LOOP
     rawdata.each_with_index do |line, index|
       current_line = line
-      Rake::Task["sowash:process_files"].invoke
-      Rake::Task["sowash:process_files"].reenable
+      Rake::Task["composer:process_files"].invoke
+      Rake::Task["composer:process_files"].reenable
     end
   end
 end
