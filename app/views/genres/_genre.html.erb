@@ -1,8 +1,11 @@
 <span class="row col-md-10 genre float-end">
-  <span class="col-md-7">
-    <%= genre.name %>
-  </span>
-  <span class="col-md-3">
-    <%= genre.vocal? ? 'Yes' : 'No' %>
-  </span>
+  <% if total_for_genre(genre.id) > 0 %>
+    <span class="col-md-7">
+      <%= genre.name %>
+    </span>
+    <span class="col-md-3">
+      <%= link_to total_for_genre(genre.id), genre_path(genre),
+       class: "link-opacity-25-hover link-underline link-underline-opacity-0" %>
+    </span>
+  <% end %>
 </span>

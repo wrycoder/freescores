@@ -21,6 +21,13 @@ class GenresController < ApplicationController
     @genres = Genre.all
   end
 
+  def show
+    @genre = Genre.find(params[:id])
+    @works = Work.where(genre: @genre)
+    @path = url_for(works_path)
+    render "works/index", status: :ok
+  end
+
   def edit
   end
 

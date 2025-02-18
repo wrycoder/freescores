@@ -70,7 +70,8 @@ module WorksHelper
     return headers
   end
 
-  def header_link(header_keys)
-    return ENV['APP_HOST'] + '/works?' + header_keys[1] + '&' + header_keys[2]
+  def header_link(header_keys, options={})
+    options[:path] ||= url_for(works_path)
+    return ENV['APP_HOST'] + options[:path] + '?' + header_keys[1] + '&' + header_keys[2]
   end
 end

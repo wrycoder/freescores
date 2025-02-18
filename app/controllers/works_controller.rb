@@ -35,25 +35,24 @@ class WorksController < ApplicationController
   end
 
   def index
-    if params[:scope].present? && params[:scope] == "all"
-      @works = Work.all.distinct
-      @current_scope = "all"
-    else
-      @works = Work.recorded.distinct
-      @current_scope = get_scope
-    end
-    if params[:sort_key].present?
-      @current_sort_key = params[:sort_key]
-      if params[:order].present?
-        trimmed_param = params[:order].sub(/ending/, '')
-        @works = @works.order(
-          {params[:sort_key].to_sym => trimmed_param.to_sym}
-        )
-      end
-    else
-      @current_sort_key = get_sort_key
-      @works = @works.sort { |a,b| a.composed_in <=> b.composed_in }
-    end
+    set_recorded_scope
+    set_sorting_options
+  end
+
+  def vocal
+    @works = Work.vocal.distinct
+    @current_scope = get_scope
+    @path = works_vocal_path
+    set_sorting_options
+    render "index"
+  end
+
+  def instrumental
+    @works = Work.instrumental.distinct
+    @current_scope = get_scope
+    @path = works_instrumental_path
+    set_sorting_options
+    render "index"
   end
 
   def show
@@ -103,5 +102,30 @@ class WorksController < ApplicationController
                                   :revised_in, :lyricist, :ascap,
                                   parts_attributes:
                                     [:id, :instrument_id, :quantity])
+    end
+
+    def set_recorded_scope
+      if params[:scope].present? && params[:scope] == "all"
+        @works = Work.all.distinct
+        @current_scope = "all"
+      else
+        @works = Work.recorded.distinct
+        @current_scope = get_scope
+      end
+    end
+
+    def set_sorting_options
+      if params[:sort_key].present?
+        @current_sort_key = params[:sort_key]
+        if params[:order].present?
+          trimmed_param = params[:order].sub(/ending/, '')
+          @works = @works.order(
+            {params[:sort_key].to_sym => trimmed_param.to_sym}
+          )
+        end
+      else
+        @current_sort_key = get_sort_key
+        @works = @works.sort { |a,b| a.composed_in <=> b.composed_in }
+      end
     end
 end

@@ -16,6 +16,27 @@ RSpec.describe GenresController do
       genre_rows = page.css('.genre')
       expect(genre_rows.length).to eq(5)
     end
+
+    it "shows all works created in a specific genre" do
+      define_environment
+      symphony_genre = Genre.find_by_name("Symphony")
+      sonata_genre = Genre.find_by_name("Sonata")
+      symphony = build(:work, genre: symphony_genre,
+        title: "Symphony No. 104")
+      orchestra = create(:instrument, name: "Orchestra", rank: 410)
+      symphony.add_instruments({ orchestra => 1 })
+      symphony.save!
+      sonata = build(:work, genre: sonata_genre,
+        title: "Piano Sonata No. 76")
+      piano = create(:instrument, name: "Piano", rank: 405)
+      sonata.add_instruments({ piano => 1 })
+      sonata.save!
+      get genre_path(symphony_genre)
+      expect(response).to have_http_status(:success)
+      expect(response.body).to match(/#{symphony.title}/)
+      expect(response.body).to_not match(/#{sonata.title}/)
+      clear_environment
+    end
   end
 
   context "adding" do
