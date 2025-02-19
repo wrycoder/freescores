@@ -14,7 +14,12 @@ namespace :composer do
   desc "Handle MP3 and PDF files for a given work"
   task :process_files => :environment do |task, args|
     fields = current_line.split("\t")
-    work = Work.find_by_title(fields[column_defs[:title]])
+    title = fields[column_defs[:title]].gsub(/\A\"(.+)\"\z/, '\1')
+    begin
+      work = Work.find_by_title!(title)
+    rescue ActiveRecord::RecordNotFound => rnfX
+      raise "Unable to find this work: #{title}\n(rnfX.message)"
+    end
     if !fields[column_defs[:file_name]].nil?
       if !(/\.mp3/ =~ fields[column_defs[:file_name]]).nil?
         recording = work.recordings
@@ -68,8 +73,9 @@ namespace :composer do
       fields = line.split("\t")
       if line_index == 1 || fields[column_defs[:title]] != work.title
         genre_id = Genre.find_by_name(fields[column_defs[:genre]]).id
+        title = fields[column_defs[:title]].gsub(/\A\"(.+)\"\z/, '\1')
         work = Work.find_or_initialize_by(
-          title: fields[column_defs[:title]],
+          title: title,
           composed_in: fields[column_defs[:composed_in]],
           genre_id: genre_id,
           ascap: true)
@@ -101,6 +107,9 @@ namespace :composer do
       end
     end # END MAIN LOOP
     rawdata.each_with_index do |line, index|
+      if index == 0
+        next
+      end
       current_line = line
       Rake::Task["composer:process_files"].invoke
       Rake::Task["composer:process_files"].reenable
