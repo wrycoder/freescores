@@ -2,7 +2,7 @@
 <%= render partial: "work" %>
 <span class="row w-100 col-md-10 float-end">
   <% if LinerNote.where(work_id: @work.id).any? %>
-    <%= LinerNote.find_by_work_id(@work.id).note %>
+    <%= simple_format(LinerNote.find_by_work_id(@work.id).note) %>
   <% end %>
 </span>
 <span class="row w-100 col-md-10 float-end">
