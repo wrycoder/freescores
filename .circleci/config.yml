@@ -6,36 +6,65 @@ orbs:
   ruby: circleci/ruby@2.1.2
   node: circleci/node@5.0.2
 
-workflows:
-  version: 2
-  build:
-    jobs:
-      - "build_rails_7_1"
-
 jobs:
-  "build_rails_7_1":
+  build:
+    working_directory: ~/app
     docker:
-      - image: cimg/ruby:3.3.1-browsers
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
+      - image: circleci/ruby:3.3.1-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_PATH: vendor/bundle
+          BUNDLE_RETRY: 3
+          BUNDLER_VERSION: 2.5.9
+          RAILS_ENV: test
+      - image: circleci/postgres:13.2
+        environment:
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - run: ruby --version
-      - run: node --version
+
+      - restore_cache:
+          key: app{{ checksum "Gemfile.lock" }}
+
       - run:
-          name: Force Bundler Version
+          name: Configure bundler
           command: |
-            sudo gem update --system
-            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tial -1 | tr -d " ")' >>
+            source $BASH_ENV
+            gem install bundler
+
       - run:
-          name: Database setup
-          command: |
-            bundle exec bin/rails active_storage:install
-            bundle exec bin/rails db:structure:load
+          name: Bundle install
+          command: bundle install
+
+      - save_cache:
+          key: app-{{ checksum "Gemfile.lock" }}
+          paths:
+             - vendor/bundle
+
+      # Wait for postgres
       - run:
-          name: RSpec
+          name: Wait for postgres
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Config database
+          environment:
+            - RAILS_ENV: test
           command: |
-            export RAILS_ENV=test
-            bundle exec rspec
-    
+            echo 'test:
+              adapter: postgresql
+              database: apptestdb
+              username: postgres
+              password: password
+              host: localhost
+            ' > config/database.yml
+      - run:
+          name: Setup Database
+          command: bundle exec rake db:create db:schema:load --trace
+
+      - run:
+          name: Run RSpec
+          command: |
+            bundle exec rspec $(circleci tests glob "spec/**/*_spec.rb") | circleci test
+          when: always
