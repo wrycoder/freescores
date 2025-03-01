@@ -14,9 +14,6 @@ jobs:
           BUNDLE_RETRY: 3
           BUNDLER_VERSION: 2.5.9
           RAILS_ENV: test
-      - image: circleci/postgres:13.2
-        environment:
-          POSTGRES_PASSWORD: password
     steps:
       - checkout
 
