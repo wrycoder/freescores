@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Configure bundler
           command: |
-            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tial -1 | tr -d " ")' >>
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >>
             source $BASH_ENV
             gem install bundler
 
@@ -62,5 +62,5 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            bundle exec rails --version
+            bundle exec rspec
           when: always
