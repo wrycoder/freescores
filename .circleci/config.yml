@@ -31,8 +31,8 @@ jobs:
       - run:
           name: Database setup
           command: |
-            bundle exec rails active_storage:install
-            bundle exec rails db:structure:load
+            bundle exec bin/rails active_storage:install
+            bundle exec bin/rails db:structure:load
       - run:
           name: RSpec
           command: |
