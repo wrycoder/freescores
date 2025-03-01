@@ -1,3 +1,10 @@
 # CircleCI configuration file
 
 version: 2.1
+orbs:
+  ruby-rails: sul-dlss/ruby-rails@4.5.0
+
+workflows:
+  example-workflow:
+    jobs:
+      - ruby-rails/test-gem
