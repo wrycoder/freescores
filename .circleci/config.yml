@@ -1,4 +1,5 @@
 # CircleCI configuration file
+# This comment to force a rebuild after cleaning up diff-lcs gem
 
 version: 2.1
 
