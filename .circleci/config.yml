@@ -1,10 +1,41 @@
 # CircleCI configuration file
 
 version: 2.1
+
 orbs:
-  ruby-rails: sul-dlss/ruby-rails@4.5.0
+  ruby: circleci/ruby@2.1.2
+  node: circleci/node@5.0.2
 
 workflows:
-  example-workflow:
+  version: 2
+  build:
     jobs:
-      - ruby-rails/test-gem
+      - "build_rails_7_1"
+
+jobs:
+  "build_rails_7_1":
+    docker:
+      - image: cimg/ruby:3.3.1-browsers
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: ruby --version
+      - run: node --version
+      - run:
+          name: Force Bundler Version
+          command: |
+            sudo gem update --system
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rails active_storage:install
+            bundle exec rails db:structure:load
+      - run:
+          name: RSpec
+          command: |
+            export RAILS_ENV=test
+            bundle exec rspec
+    
