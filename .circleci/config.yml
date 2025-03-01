@@ -66,5 +66,5 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            bundle exec rspec $(circleci tests glob "spec/**/*_spec.rb") | circleci test
+            bundle exec rspec $(circleci tests glob "spec/**/*_spec.rb")
           when: always
