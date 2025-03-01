@@ -10,7 +10,7 @@ jobs:
   build:
     working_directory: ~/app
     docker:
-      - image: circleci/ruby:3.3.1-node
+      - image: cimg/ruby:3.3.1-node
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_PATH: vendor/bundle
