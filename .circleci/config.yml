@@ -39,23 +39,6 @@ jobs:
           paths:
              - vendor/bundle
 
-      # Wait for postgres
-      - run:
-          name: Wait for postgres
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - run:
-          name: Config database
-          environment:
-            - RAILS_ENV: test
-          command: |
-            echo 'test:
-              adapter: postgresql
-              database: apptestdb
-              username: postgres
-              password: password
-              host: localhost
-            ' > config/database.yml
       - run:
           name: Setup Database
           command: bundle exec rails db:migrate --trace
