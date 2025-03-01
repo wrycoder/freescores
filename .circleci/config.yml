@@ -58,7 +58,7 @@ jobs:
             ' > config/database.yml
       - run:
           name: Setup Database
-          command: bundle exec rake db:create db:schema:load --trace
+          command: bundle exec rails db:migrate --trace
 
       - run:
           name: Run RSpec
