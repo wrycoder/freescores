@@ -63,9 +63,12 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            APP_HOST="http://localhost" bundle exec rspec --fail-fast $(circleci tests glob "spec/**/*_spec.rb" |circleci tests split --split-by=timings)
+            export APP_HOST="http://localhost"
+            bundle exec rspec --fail-fast $(circleci tests glob "spec/**/*_spec.rb" |circleci tests split --split-by=timings)
           when: always
 
       - run:
           name: Save Screenshots
           command: mkdir ~/app/screenshots
+      - store_artifacts:
+          path: ~/app/screenshots
