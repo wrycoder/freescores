@@ -14,6 +14,7 @@ jobs:
           BUNDLE_RETRY: 3
           BUNDLER_VERSION: 2.5.9
           RAILS_ENV: test
+          APP_HOST: "http://localhost"
     steps:
       - checkout
       - run: mkdir test-reports
@@ -51,7 +52,6 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            export APP_HOST="http://localhost"
             bundle exec rspec --fail-fast $(circleci tests glob "spec/**/*_spec.rb" |circleci tests split --split-by=timings)
           when: always
 
