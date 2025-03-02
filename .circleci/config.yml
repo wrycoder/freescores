@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Run RSpec
           command: |
-            bundle exec rspec --fail-fast $(circleci tests glob "spec/**/*_spec.rb" |circleci tests split --split-by=timings)
+            APP_HOST="http://localhost" bundle exec rspec --fail-fast $(circleci tests glob "spec/**/*_spec.rb" |circleci tests split --split-by=timings)
           when: always
 
       - run:
