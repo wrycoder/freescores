@@ -18,6 +18,18 @@ jobs:
       - checkout
       - run: mkdir test-reports
       - run:
+          name: Creating Dummy Artifacts
+          command: |
+            echo "my artifact file" > /app/art-1;
+            mkdir /app/artifacts;
+            echo "my artifact files in a dir" >/app/artifacts/art-2;
+      - store_artifacts:
+          path: /app/art-1
+          destination: artifact-file
+      - store_artifacts:
+          path: /app/artifacts
+
+      - run:
           name: Download Selenium
           command: curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
       - run:
