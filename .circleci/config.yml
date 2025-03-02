@@ -71,5 +71,5 @@ jobs:
           name: Save Screenshots
           command: mkdir ~/app/screenshots
       - store_artifacts:
-          path: ~/app/tmp/works_index_path.png
+          path: works_index_path.png
           destination: ~/app/screenshots
