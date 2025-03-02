@@ -5,7 +5,7 @@ RSpec.describe Work do
     it 'shows all current works',
       :js => true do
       visit works_path
-      save_screenshot('works_index_path.png')
+      save_timestamped_screenshot(page, 'works_index_path')
       expect(1).to eq(1)
     end
   end
