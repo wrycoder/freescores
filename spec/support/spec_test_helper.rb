@@ -38,5 +38,13 @@ module SpecTestHelper
     ENV['MEDIA_HOST'] = @original_media_host
     ENV['FILE_ROOT'] = @original_file_root
   end
+
+  def save_timestamped_screenshot(page, method_name)
+    timestamp = Time.zone.now.strftime("%Y_%m_%d-%H_%M_%S")
+    filename = "#{method_name}-#{timestamp}.png"
+    screenshot_path = Rails.root.join("tmp", "screenshots", filename)
+
+    page.save_screenshot(screenshot_path)
+  end
 end
 
