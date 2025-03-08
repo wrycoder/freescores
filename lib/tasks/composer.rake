@@ -71,9 +71,9 @@ namespace :composer do
         end
       end
       fields = line.split("\t")
-      if line_index == 1 || fields[column_defs[:title]] != work.title
+      title = fields[column_defs[:title]].gsub(/\A\"(.+)\"\z/, '\1')
+      if line_index == 1 || title != work.title
         genre_id = Genre.find_by_name(fields[column_defs[:genre]]).id
-        title = fields[column_defs[:title]].gsub(/\A\"(.+)\"\z/, '\1')
         work = Work.find_or_initialize_by(
           title: title,
           composed_in: fields[column_defs[:composed_in]],
