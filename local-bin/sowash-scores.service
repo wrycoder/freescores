@@ -1,0 +1,17 @@
+[Unit]
+Description= Library of scores by Rick Sowash
+Documentation= https://www.sowash.com
+After=network.target
+
+[Service]
+User=michael
+Group=michael
+WorkingDirectory=/home/michael/freescores
+Type=simple
+ExecStart=/usr/bin/sowash-freescores.sh
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+
