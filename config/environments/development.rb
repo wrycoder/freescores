@@ -78,4 +78,5 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.hosts << "blurve.net:8181"
+  config.hosts << "sowash.blurve.net"
 end
