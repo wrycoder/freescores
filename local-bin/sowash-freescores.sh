@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ADMIN_PASSWORD=uo*ZRPjVdz6
+export ADMIN_PASSWORD=[set at runtime]
 export APP_HOST=https://sowash.blurve.net
 export MEDIA_HOST=https://sowash.com
 export FILE_ROOT=recordings/mp3
