@@ -19,7 +19,7 @@ module ApplicationHelper
         "https://sowash.com/recordings/index.html"],
       :sheetmusic   => [
         "https://sowash.com/graphics/menu/menu2a.gif",
-        "https://sowash.com/scores/index.html"],
+        "https://sowash.blurve.net"],
       :filmscores   => [
         "https://sowash.com/graphics/menu/menu9a.gif",
         "https://sowash.com/filmscore/index.html"],
