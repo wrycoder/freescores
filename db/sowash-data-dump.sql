@@ -979,7 +979,7 @@ INSERT INTO scores VALUES(38,'bedroom.pdf','VI. The Bedroom','2025-03-08 12:10:2
 INSERT INTO scores VALUES(39,'our_home_7.pdf','VII. The Living Room','2025-03-08 12:10:24.868836','2025-03-08 12:10:24.868836',155);
 INSERT INTO scores VALUES(40,'hpschd_theme_6vari.pdf','(one movement)','2025-04-05 19:39:39.465936','2025-04-05 19:39:39.465936',93);
 INSERT INTO scores VALUES(41,'morning_at_seaside.pdf','(full score)','2025-04-05 19:41:50.411199','2025-04-05 19:41:50.411199',60);
-INSERT INTO scores VALUES(42,'ragtime.pdf','III. Ragtime','2025-04-05 19:46:18.596571','2025-04-05 19:46:18.596571',72);
+INSERT INTO scores VALUES(42,'trio2_galop.pdf','II. Galop','2025-04-05 19:46:18.596571','2025-04-05 19:53:36.804410',72);
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('parts',340);
 INSERT INTO sqlite_sequence VALUES('instruments',43);
