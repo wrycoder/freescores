@@ -952,7 +952,7 @@ INSERT INTO recordings VALUES(296,'Cello_cto_I.mp3','I. Hymns and Fugues','2025-
 INSERT INTO recordings VALUES(297,'blues_cello_cto.mp3','II. Blues','2025-03-08 12:10:24.287349','2025-03-08 12:10:24.287349',135);
 INSERT INTO recordings VALUES(298,'sorbet.mp3','III. Sorbet','2025-03-08 12:10:24.301994','2025-03-08 12:10:24.301994',135);
 INSERT INTO recordings VALUES(299,'cello_cto_finale.mp3','IV. Finale','2025-03-08 12:10:24.315163','2025-03-08 12:10:24.315163',135);
-INSERT INTO recordings VALUES(300,'fant_shen_usarmystr_.mp3','string orchestra version','2025-03-08 12:10:24.332477','2025-03-08 12:10:24.332477',136);
+INSERT INTO recordings VALUES(300,'fant_shen_usarmystr_.mp3','(one movement)','2025-03-08 12:10:24.332477','2025-04-07 13:41:46.819362',136);
 INSERT INTO recordings VALUES(301,'spirit_north.mp3','I. Spirit of the North','2025-03-08 12:10:24.349964','2025-03-08 12:10:24.349964',137);
 INSERT INTO recordings VALUES(302,'North_Lights.mp3','II. Northern Lights','2025-03-08 12:10:24.367884','2025-03-08 12:10:24.367884',137);
 INSERT INTO recordings VALUES(303,'father_of_waters.mp3','III. Father of Waters','2025-03-08 12:10:24.382939','2025-03-08 12:10:24.382939',137);
@@ -999,7 +999,7 @@ INSERT INTO scores VALUES(3,'Cello_cto_I.pdf','I. Hymns and Fugues','2025-03-08 
 INSERT INTO scores VALUES(4,'blues_cello_cto.pdf','II. Blues','2025-03-08 12:10:24.293113','2025-03-08 12:10:24.293113',135);
 INSERT INTO scores VALUES(5,'mp3.sorbet.pdf','III. Sorbet','2025-03-08 12:10:24.308701','2025-03-08 12:10:24.308701',135);
 INSERT INTO scores VALUES(6,'cello_cto_finale.pdf','IV. Finale','2025-03-08 12:10:24.322987','2025-03-08 12:10:24.322987',135);
-INSERT INTO scores VALUES(7,'sowash_fantasia.pdf','string orchestra version','2025-03-08 12:10:24.340944','2025-03-08 12:10:24.340944',136);
+INSERT INTO scores VALUES(7,'sowash_fantasia.pdf','(one movement)','2025-03-08 12:10:24.340944','2025-04-07 13:42:07.481403',136);
 INSERT INTO scores VALUES(8,'spirit_north.pdf','I. Spirit of the North','2025-03-08 12:10:24.359291','2025-03-08 12:10:24.359291',137);
 INSERT INTO scores VALUES(9,'North_Lights.pdf','II. Northern Lights','2025-03-08 12:10:24.374723','2025-03-08 12:10:24.374723',137);
 INSERT INTO scores VALUES(10,'father_of_waters.pdf','III. Father of Waters','2025-03-08 12:10:24.391505','2025-03-08 12:10:24.391505',137);
