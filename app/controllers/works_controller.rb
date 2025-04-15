@@ -64,8 +64,8 @@ class WorksController < ApplicationController
   end
 
   def search
-    search_term = params[:search_term]
-    clause = "title like '%#{search_term}%'"
+    search_term = Work.connection.quote('%' + params[:search_term] + '%')
+    clause = "title like #{search_term}"
     @works = Work.where(clause).distinct
     render "index"
   end
