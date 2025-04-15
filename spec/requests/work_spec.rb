@@ -369,6 +369,18 @@ RSpec.describe WorksController do
       }
       expect(response).to have_http_status(:success)
       expect(response.body).to match(/#{title_fragment}/)
+      gandalf = build(:work,
+        title: "Gandalf's Curse",
+        genre: Genre.first
+      )
+      expect(gandalf.title).to match(/Gandalf/)
+      gandalf.add_instruments({ Instrument.first => 1});
+      expect(gandalf.save).to eq(true)
+      get works_search_path, params: {
+        search_term: gandalf.title
+      }
+      expect(response).to have_http_status(:success)
+      expect(response.body).to match("Gandalf&#39;s Curse")
     end
 
     it "remembers the users's scope and sort_key" do
