@@ -2,14 +2,12 @@
 # This comment to force a rebuild after cleaning up diff-lcs gem
 
 version: 2.1
-orbs:
-  ruby: circleci/ruby@3.3.7
 
 jobs:
   build:
     working_directory: ~/app
     docker:
-      - image: cimg/ruby:3.3-browsers
+      - image: cimg/ruby:3.3.7-browser
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_PATH: vendor/bundle
